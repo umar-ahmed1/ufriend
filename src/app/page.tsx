@@ -60,11 +60,11 @@ export default function Home() {
           bottom={0}
           left={0}
           right={0}
-          bg="rgba(0, 0, 0, 0.1)"
+          bg="rgba(0, 0, 0, 0.2)"
         />
         <Flex
           zIndex="1"
-          width={{ base: "100%", md: "50%" }}
+          width={{ base: "100%", md: "33%" }}
           height="30%"
           bgColor="white"
           opacity="0.96"
