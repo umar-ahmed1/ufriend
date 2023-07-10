@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/loginsignup/CreateAccount/majors.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/loginsignup/CreateAccount/majors.js", "src/components/loginsignup/CreateAccount/Combobox.js"],
   "exclude": ["node_modules"]
 }

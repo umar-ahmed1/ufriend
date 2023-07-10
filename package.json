@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/next-js": "^2.1.4",
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
@@ -16,6 +17,7 @@
     "@types/node": "20.4.0",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "downshift": "^7.6.0",
     "encoding": "^0.1.13",
     "firebase": "^10.0.0",
     "framer-motion": "^10.12.18",
