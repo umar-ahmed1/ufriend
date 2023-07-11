@@ -46,14 +46,21 @@ const Step2: React.FC<Step2Props> = ({
   const [searchValue, setSearchValue] = React.useState("");
   const [majorClicked, setMajorClicked] = React.useState(false);
 
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+
   const handleSubmit = async () => {
     setLoading(true);
     setErrorMessage("");
     try {
+      console.log(signUpForm)
     } catch (error: any) {
       console.log("createUser error", error.message);
     }
     setLoading(false);
+  };
+
+  const handleClick = () => {
+    setMajorClicked(!majorClicked);
   };
 
   return (
@@ -69,7 +76,7 @@ const Step2: React.FC<Step2Props> = ({
           maxH="50px"
           readOnly={true}
           value={signUpForm.major}
-          onClick={() => setMajorClicked(!majorClicked)}
+          onClick={handleClick}
           _hover={{
             cursor: "pointer",
             border: "1px solid",
@@ -77,9 +84,77 @@ const Step2: React.FC<Step2Props> = ({
           }}
         />
         {majorClicked && (
-          <Combobox signUpForm={signUpForm} setSignUpForm={setSignUpForm} setMajorClicked = {setMajorClicked} majorClicked={majorClicked} />
+          <Combobox
+            signUpForm={signUpForm}
+            setSignUpForm={setSignUpForm}
+            setMajorClicked={setMajorClicked}
+            majorClicked={majorClicked}
+          />
         )}
       </Flex>
+      <Stack direction="column" width="100%" mt={3}>
+        <Text fontWeight={600} color="brand.700" fontSize="15px">
+          Program Details
+        </Text>
+        <Text color="brand.700" fontSize="14px">
+          These will be used to help you find friends in similar programs and years
+        </Text>
+        <Stack direction="row" width="100%" align="center">
+          
+          <Select
+            width="100%"
+            color="brand.700"
+            fontSize="17px"
+            p="16px 8px 16px 0px"
+            m="12px 0px"
+            placeholder="Program Type"
+            border="1px solid"
+            borderColor="brand.700"
+            _placeholder={{ color: "brand.700" }}
+            _focus={{ boxShadow: "none" }}
+            value={signUpForm.programType}
+            onChange={(event) => {
+              setSignUpForm((prev) => ({
+                ...prev,
+                programType: event.target.value,
+              }));
+            }}
+          >
+            {[
+              'Undergraduate','Graduate'
+            ].map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </Select>
+          <Select
+            width="100%"
+            color="brand.700"
+            fontSize="17px"
+            placeholder="Year of Program"
+            border="1px solid"
+            borderColor="brand.700"
+            _placeholder={{ color: "brand.700" }}
+            _focus={{ boxShadow: "none" }}
+            value={signUpForm.yearOfProgram}
+            onChange={(event) => {
+              setSignUpForm((prev) => ({
+                ...prev,
+                yearOfProgram: event.target.value,
+              }));
+            }}
+          >
+            {[
+              1,2,3,4
+            ].map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </Select>
+        </Stack>
+      </Stack>
       {errorMessage && (
         <Alert status="error">
           <AlertIcon />

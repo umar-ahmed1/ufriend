@@ -34,7 +34,7 @@ const AuthModal: React.FC<AuthModalProps> = () => {
     return (
         <Modal isOpen={modalState.open} onClose={handleClose} size={{base:'full',md:'2xl'}}>
             <ModalOverlay bg='blackAlpha.600'/>
-            <ModalContent top={{base:'0rem',md:'15vh'}}>
+            <ModalContent top={{base:'0rem',md:'5vh'}}>
                 <ModalHeader>
                     <Flex width='100%' align='center' justify='center' direction='column' height='80px'>
                         <Image src='/images/logo.png' height='100%'/> 

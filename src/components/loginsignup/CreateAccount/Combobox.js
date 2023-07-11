@@ -35,7 +35,6 @@ const Combobox = ({signUpForm,setSignUpForm,setMajorClicked,majorClicked}) => {
   }))
     if(selectedItem){
       setMajorClicked(!majorClicked)
-      console.log(selectedItem)
     }
   },[selectedItem])
 
@@ -55,12 +54,11 @@ const Combobox = ({signUpForm,setSignUpForm,setMajorClicked,majorClicked}) => {
             {inputItems.map((item, index) => (
               <ListItem
                 {...getItemProps({ item, index })}
-                bg={highlightedIndex === index ? "teal.100" : null}
+                bg={highlightedIndex === index ? "brand.100" : null}
                 px={4}
                 py={2}
                 cursor="pointer"
                 key={index}
-                border = '1px solid'
               >
                 {item}
               </ListItem>

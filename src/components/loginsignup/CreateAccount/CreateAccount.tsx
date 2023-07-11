@@ -18,7 +18,8 @@ export type UserDetails = {
     email:string,
     university:string,
     major:string,
-    year:number,
+    yearOfProgram:string,
+    programType:string
     bio:string,
     birthMonth:string,
     birthDay:string,
@@ -33,7 +34,8 @@ const CreateAccount:React.FC<CreateAccountProps> = () => {
         email:'',
         university:'',
         major:'',
-        year:1,
+        yearOfProgram:'Year of Program',
+        programType:'',
         bio:'',
         birthMonth:'',
         birthDay:'',
@@ -44,8 +46,8 @@ const CreateAccount:React.FC<CreateAccountProps> = () => {
     return (
         <Flex width='100%' align='center' justify='center' backgroundColor='white' direction='column'>
             <Text fontWeight={600} color='brand.100'>Step {step} of 4</Text>
-            {step === 1 && (<Step2 step={step} setStep = {setStep} signUpForm={signUpForm} setSignUpForm={setSignUpForm}/>)}
-            {step === 2 && (<Step1 step={step} setStep = {setStep} signUpForm={signUpForm} setSignUpForm={setSignUpForm}/>)}
+            {step === 1 && (<Step1 step={step} setStep = {setStep} signUpForm={signUpForm} setSignUpForm={setSignUpForm}/>)}
+            {step === 2 && (<Step2 step={step} setStep = {setStep} signUpForm={signUpForm} setSignUpForm={setSignUpForm}/>)}
             {step === 3 && (<Step3 step={step} setStep = {setStep} signUpForm={signUpForm} setSignUpForm={setSignUpForm}/>)}
             {step === 4 && (<Step4 step={step} setStep = {setStep} signUpForm={signUpForm} setSignUpForm={setSignUpForm}/>)}
         </Flex>

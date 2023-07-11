@@ -20,7 +20,7 @@ const Step4:React.FC<Step4Props> = ({step,setStep,signUpForm,setSignUpForm}) => 
     return (
             <>
             <Text fontSize='31px' color='brand.700' fontWeight={600} mt={2} mb={3}>
-                {'Choose your profile pic'}
+                {'Customize your Profile'}
             </Text>
                 <Button mt={4} width='100%' bg='white' mb={4}  borderRadius='full' onClick={handleSubmit}>
                     <Text mr={4}>Next</Text>
