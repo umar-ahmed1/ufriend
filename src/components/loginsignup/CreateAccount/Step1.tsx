@@ -7,10 +7,15 @@ import {
   Text,
   Alert,
   AlertIcon,
+  InputGroup,
+  InputRightElement,
+  IconButton
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import React from "react";
 import { UserDetails } from "./CreateAccount";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+
 
 type Step1Props = {
   step: number;
@@ -27,16 +32,21 @@ const Step1: React.FC<Step1Props> = ({
 }) => {
   const [error, setError] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [show,setShow] = React.useState(false)
 
   const handleSubmit = () => {
     setError("");
     if (validateEmail(signUpForm.email) && signUpForm.displayName !== "") {
-      setStep(step + 1);
+        if (signUpForm.birthDay != '' && signUpForm.birthDay != 'Day' && signUpForm.birthMonth != 'Month' && signUpForm.birthMonth != '' && signUpForm.birthYear != 'Year' && signUpForm.birthYear != ''){
+            setStep(step + 1)
+        } else {
+            setError("Invalid Date of birth")
+        }
     } else {
       setError("Invalid Name or Email");
     }
+    
   };
   //https://stackoverflow.com/questions/46155/how-can-i-validate-an-email-address-in-javascript
   const validateEmail = (email: string) => {
@@ -97,40 +107,29 @@ const Step1: React.FC<Step1Props> = ({
           {error}
         </Alert>
       )}
+      <InputGroup size="md">
       <Input
-        type="password"
-        name="password"
         width="100%"
         height="100%"
-        color="brand.900"
+        color="brand.700"
         fontSize="17px"
         p="16px 8px 16px 8px"
         m="12px 0px"
         placeholder="Password"
         border="1px solid"
-        borderColor="brand.700"
+        borderColor="brand.100"
         _placeholder={{ color: "brand.700" }}
         _focus={{ boxShadow: "none" }}
         value={password}
         onChange={(event) => setPassword(event.target.value)}
-      ></Input>
-      <Input
-        type="password"
-        name="confirmPassword"
-        width="100%"
-        height="100%"
-        color="brand.900"
-        fontSize="17px"
-        p="16px 8px 16px 8px"
-        m="12px 0px"
-        placeholder="Confirm Password"
-        border="1px solid"
-        borderColor="brand.700"
-        _placeholder={{ color: "brand.700" }}
-        _focus={{ boxShadow: "none" }}
-        value={confirmPassword}
-        onChange={(event) => setConfirmPassword(event.target.value)}
-      ></Input>
+        type={show ? "text" : "password"}
+      />
+      <InputRightElement width="4.5rem" height="100%" display="flex" alignItems="center">
+        <IconButton h="1.75rem" size="sm" onClick={() => { setShow(!show); } } aria-label={"show password"}>
+          {show ? <FiEyeOff /> : <FiEye />}
+        </IconButton>
+      </InputRightElement>
+    </InputGroup>
       <Stack direction="column" width="100%" mt={3}>
         <Text fontWeight={600} color="brand.700" fontSize="15px">
           Date of birth

@@ -48,15 +48,13 @@ const Step2: React.FC<Step2Props> = ({
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const handleSubmit = async () => {
-    setLoading(true);
+  const handleSubmit = () => {
     setErrorMessage("");
-    try {
-      console.log(signUpForm)
-    } catch (error: any) {
-      console.log("createUser error", error.message);
+    if(signUpForm.yearOfProgram != "Year of Program" && signUpForm.programType != "Program Type" && signUpForm.major != ''){
+      setStep(step+1)
+    } else {
+      setErrorMessage("Some fields are not complete")
     }
-    setLoading(false);
   };
 
   const handleClick = () => {
