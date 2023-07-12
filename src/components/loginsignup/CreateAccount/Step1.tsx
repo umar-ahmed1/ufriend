@@ -24,6 +24,8 @@ type Step1Props = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   signUpForm: UserDetails;
   setSignUpForm: React.Dispatch<React.SetStateAction<UserDetails>>;
+  password:string,
+  setPassword: React.Dispatch<React.SetStateAction<string>>
 };
 
 const Step1: React.FC<Step1Props> = ({
@@ -31,18 +33,13 @@ const Step1: React.FC<Step1Props> = ({
   setStep,
   signUpForm,
   setSignUpForm,
+  password,
+  setPassword
 }) => {
   const [error, setError] = React.useState("");
-  const [password, setPassword] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const [show, setShow] = React.useState(false);
-  //React Firebase Hook to create user
-  const [
-    createUserWithEmailAndPassword,
-    userCredentials,
-    loading,
-    setErrorAcc,
-  ] = useCreateUserWithEmailAndPassword(auth);
+
 
   const handleSubmit = (event:any) => {
     event.preventDefault()
@@ -56,8 +53,7 @@ const Step1: React.FC<Step1Props> = ({
         signUpForm.birthYear != "Year" &&
         signUpForm.birthYear != ""
       ) {
-        createUserWithEmailAndPassword(signUpForm.email, password);
-        setStep(step + 1);
+        setStep(step+1)
       } else {
         setError("Invalid Date of birth");
       }
@@ -65,22 +61,6 @@ const Step1: React.FC<Step1Props> = ({
       setError("Invalid Name or Email");
     }
   };
-
-  //when the create hook makes a user in auth then we should make a document in collections for that user
-  const createUserDoc = async (user: User) => {
-    const userRef = doc(firestore, "users", user.uid);
-    //set the document with data from the hook
-    await setDoc(userRef, user);
-    //add all the data that we have collected
-    console.log(signUpForm);
-    await updateDoc(userRef, signUpForm);
-  };
-
-  React.useEffect(() => {
-    if (userCredentials) {
-      createUserDoc(JSON.parse(JSON.stringify(userCredentials.user)));
-    }
-  }, [userCredentials]);
 
   //https://stackoverflow.com/questions/46155/how-can-i-validate-an-email-address-in-javascript
   const validateEmail = (email: string) => {
@@ -301,7 +281,6 @@ const Step1: React.FC<Step1Props> = ({
         mb={4}
         borderColor="brand.100"
         borderRadius="full"
-        isLoading={loading}
         onClick={(event) => handleSubmit(event)}
       >
         <Text mr={4}>Next</Text>
