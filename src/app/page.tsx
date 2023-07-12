@@ -6,10 +6,19 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { authModalState } from "@/components/atoms/authAtom";
 import { useSetRecoilState } from "recoil";
 import AuthModal from "@/components/loginsignup/AuthModal";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/clientApp";
 
 export default function Home() {
   const router = useRouter();
   const setModalState = useSetRecoilState(authModalState);
+  const [user] = useAuthState(auth)
+
+
+  React.useEffect(() => {
+    console.log(user)
+    //router.push("/home")
+  },[user])
 
   return (
     <>
@@ -42,6 +51,7 @@ export default function Home() {
           <Icon as={AiOutlineMenu} fontSize={35} />
         </Flex>
       </Flex>
+
       <Flex
         width="100%"
         border="1px solid grey"
@@ -54,6 +64,7 @@ export default function Home() {
         justify="center"
         position="relative"
       >
+        
         <Box
           position="absolute"
           top={0}

@@ -66,6 +66,33 @@ const Step2: React.FC<Step2Props> = ({
       <Text fontSize="31px" color="brand.100" fontWeight={600} mt={2} mb={3}>
         {"Tell us about yourself"}
       </Text>
+      <Select
+            width="100%"
+            color="brand.700"
+            fontSize="17px"
+            p="16px 8px 16px 0px"
+            m="12px 0px"
+            placeholder="University"
+            border="1px solid"
+            borderColor="brand.700"
+            _placeholder={{ color: "brand.700" }}
+            _focus={{ boxShadow: "none" }}
+            value={signUpForm.university}
+            onChange={(event) => {
+              setSignUpForm((prev) => ({
+                ...prev,
+                university: event.target.value,
+              }));
+            }}
+          >
+            {[
+              'University of Calgary','University of Alberta'
+            ].map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </Select>
       <Flex position="relative" direction="column" width="100%" height="100px">
         <Input
           width="100%"
