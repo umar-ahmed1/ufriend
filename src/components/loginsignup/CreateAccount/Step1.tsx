@@ -9,13 +9,15 @@ import {
   AlertIcon,
   InputGroup,
   InputRightElement,
-  IconButton
+  IconButton,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import React from "react";
 import { UserDetails } from "./CreateAccount";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth, firestore } from "@/firebase/clientApp";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 type Step1Props = {
   step: number;
@@ -33,26 +35,59 @@ const Step1: React.FC<Step1Props> = ({
   const [error, setError] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
-  const [show,setShow] = React.useState(false)
+  const [show, setShow] = React.useState(false);
+  //React Firebase Hook to create user
+  const [
+    createUserWithEmailAndPassword,
+    userCredentials,
+    loading,
+    setErrorAcc,
+  ] = useCreateUserWithEmailAndPassword(auth);
 
-  const handleSubmit = () => {
+  const handleSubmit = (event:any) => {
+    event.preventDefault()
     setError("");
     if (validateEmail(signUpForm.email) && signUpForm.displayName !== "") {
-        if (signUpForm.birthDay != '' && signUpForm.birthDay != 'Day' && signUpForm.birthMonth != 'Month' && signUpForm.birthMonth != '' && signUpForm.birthYear != 'Year' && signUpForm.birthYear != ''){
-            setStep(step + 1)
-        } else {
-            setError("Invalid Date of birth")
-        }
+      if (
+        signUpForm.birthDay != "" &&
+        signUpForm.birthDay != "Day" &&
+        signUpForm.birthMonth != "Month" &&
+        signUpForm.birthMonth != "" &&
+        signUpForm.birthYear != "Year" &&
+        signUpForm.birthYear != ""
+      ) {
+        createUserWithEmailAndPassword(signUpForm.email, password);
+        setStep(step + 1);
+      } else {
+        setError("Invalid Date of birth");
+      }
     } else {
       setError("Invalid Name or Email");
     }
-    
   };
+
+  //when the create hook makes a user in auth then we should make a document in collections for that user
+  const createUserDoc = async (user: User) => {
+    const userRef = doc(firestore, "users", user.uid);
+    //set the document with data from the hook
+    await setDoc(userRef, user);
+    //add all the data that we have collected
+    console.log(signUpForm);
+    await updateDoc(userRef, signUpForm);
+  };
+
+  React.useEffect(() => {
+    if (userCredentials) {
+      createUserDoc(JSON.parse(JSON.stringify(userCredentials.user)));
+    }
+  }, [userCredentials]);
+
   //https://stackoverflow.com/questions/46155/how-can-i-validate-an-email-address-in-javascript
   const validateEmail = (email: string) => {
     var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
+
 
   return (
     <>
@@ -108,28 +143,40 @@ const Step1: React.FC<Step1Props> = ({
         </Alert>
       )}
       <InputGroup size="md">
-      <Input
-        width="100%"
-        height="100%"
-        color="brand.700"
-        fontSize="17px"
-        p="16px 8px 16px 8px"
-        m="12px 0px"
-        placeholder="Password"
-        border="1px solid"
-        borderColor="brand.100"
-        _placeholder={{ color: "brand.700" }}
-        _focus={{ boxShadow: "none" }}
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        type={show ? "text" : "password"}
-      />
-      <InputRightElement width="4.5rem" height="100%" display="flex" alignItems="center">
-        <IconButton h="1.75rem" size="sm" onClick={() => { setShow(!show); } } aria-label={"show password"}>
-          {show ? <FiEyeOff /> : <FiEye />}
-        </IconButton>
-      </InputRightElement>
-    </InputGroup>
+        <Input
+          width="100%"
+          height="100%"
+          color="brand.700"
+          fontSize="17px"
+          p="16px 8px 16px 8px"
+          m="12px 0px"
+          placeholder="Password"
+          border="1px solid"
+          borderColor="brand.100"
+          _placeholder={{ color: "brand.700" }}
+          _focus={{ boxShadow: "none" }}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          type={show ? "text" : "password"}
+        />
+        <InputRightElement
+          width="4.5rem"
+          height="100%"
+          display="flex"
+          alignItems="center"
+        >
+          <IconButton
+            h="1.75rem"
+            size="sm"
+            onClick={() => {
+              setShow(!show);
+            }}
+            aria-label={"show password"}
+          >
+            {show ? <FiEyeOff /> : <FiEye />}
+          </IconButton>
+        </InputRightElement>
+      </InputGroup>
       <Stack direction="column" width="100%" mt={3}>
         <Text fontWeight={600} color="brand.700" fontSize="15px">
           Date of birth
@@ -254,7 +301,8 @@ const Step1: React.FC<Step1Props> = ({
         mb={4}
         borderColor="brand.100"
         borderRadius="full"
-        onClick={handleSubmit}
+        isLoading={loading}
+        onClick={(event) => handleSubmit(event)}
       >
         <Text mr={4}>Next</Text>
       </Button>

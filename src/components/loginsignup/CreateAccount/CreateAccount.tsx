@@ -24,7 +24,7 @@ export type UserDetails = {
     birthMonth:string,
     birthDay:string,
     birthYear:string,
-    photoURL:string,
+    photoURL?:string,
 }
 
 const CreateAccount:React.FC<CreateAccountProps> = () => {
