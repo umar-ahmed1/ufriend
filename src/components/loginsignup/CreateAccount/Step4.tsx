@@ -53,15 +53,12 @@ const Step4: React.FC<Step4Props> = ({
 
   //when the create hook makes a user in auth then we should make a document in collections for that user
   const createUserDoc = async (user: User) => {
-    console.log("doc start");
     const userRef = doc(firestore, "users", user.uid);
     //set the document with data from the hook
     await setDoc(userRef, user);
-    console.log("doc mid");
     //add all the data that we have collected
     console.log(signUpForm);
     await updateDoc(userRef, signUpForm);
-    console.log("doc end");
   };
 
   React.useEffect(() => {

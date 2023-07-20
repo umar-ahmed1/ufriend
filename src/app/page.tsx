@@ -17,7 +17,9 @@ export default function Home() {
 
   React.useEffect(() => {
     console.log(user)
-    //router.push("/home")
+    if(user){
+      router.push("/home")
+    }    
   },[user])
 
   return (
