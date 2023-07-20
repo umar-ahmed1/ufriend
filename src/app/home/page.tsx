@@ -13,10 +13,6 @@ import {
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-type pageProps = {
-  userData: UserDetails;
-};
-
 interface UserData {
     apiKey: string;
     appName: string;
@@ -44,7 +40,11 @@ interface UserData {
     university: string;
     yearOfProgram: string;
   }
-  
+
+
+type pageProps = {
+
+};
 
 const page: React.FC<pageProps> = () => {
   const [user] = useAuthState(auth);
