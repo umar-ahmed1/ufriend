@@ -1,7 +1,8 @@
 "use client";
 import { UserDetails } from "@/components/loginsignup/CreateAccount/CreateAccount";
 import { auth, firestore } from "@/firebase/clientApp";
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { signOut, User } from "firebase/auth";
 import {
   collection,
   doc,
@@ -30,7 +31,7 @@ interface UserData {
     major: string;
     photoURL: string;
     programType: string;
-    providerData: Array<any>; // Replace 'any' with the actual type of providerData array if possible
+    providerData: Array<any>;
     stsTokenManager: {
       expirationTime: number;
       accessToken: string;
@@ -43,11 +44,10 @@ interface UserData {
 
 
 type pageProps = {
-
+  user?: User | null
 };
 
-const page: React.FC<pageProps> = () => {
-  const [user] = useAuthState(auth);
+const page: React.FC<pageProps> = ({user}) => {
   const [loading, setLoading] = React.useState(true);
   const [userData, setUserData] = React.useState<UserData>()
 
@@ -62,6 +62,11 @@ const page: React.FC<pageProps> = () => {
   React.useEffect(() => {
     console.log(userData);
   }, [userData]);
+
+  const logout = async () => {
+    console.log("hi")
+    await signOut(auth)
+  }
 
   //function to get all the user details from firestore
   const getUserDetails = async () => {
@@ -85,6 +90,7 @@ const page: React.FC<pageProps> = () => {
         <Text>{userData && userData.displayName as string}</Text>
         <Text>{userData && userData.university as string}</Text>
         <Text>{userData && userData.birthDay as string}</Text>
+        <Button onClick={logout}>Sign out</Button>
       </Flex>
     </>
   );

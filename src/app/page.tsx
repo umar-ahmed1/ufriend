@@ -8,24 +8,24 @@ import { useSetRecoilState } from "recoil";
 import AuthModal from "@/components/loginsignup/AuthModal";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
+import UserHome from "@/components/userpage/UserHome";
 
 export default function Home() {
   const router = useRouter();
   const setModalState = useSetRecoilState(authModalState);
   const [user] = useAuthState(auth)
 
-
   React.useEffect(() => {
     console.log(user)
-    if(user){
-      router.push("/home")
-    }    
-  },[user])
+  })
+
 
   return (
     <>
       <AuthModal/>
-      <Flex width="100%" height="10vh" align="center" justify="space-between">
+      {!user ? (
+        <>
+        <Flex width="100%" height="10vh" align="center" justify="space-between">
         <Flex height="100%" align="center" ml={5}>
           <Image
             src="/images/logo.png"
@@ -132,6 +132,18 @@ export default function Home() {
           </Stack>
         </Flex>
       </Flex>
+        </>
+
+      )
+
+    : (
+      <>
+      <UserHome user={user}/>
+      </>
+    )
+    
+    }
+      
     </>
   );
 }
