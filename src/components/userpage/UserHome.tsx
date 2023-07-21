@@ -19,9 +19,10 @@ import { VscAccount } from "react-icons/vsc";
 import { IoSparkles } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import {CiSettings} from 'react-icons/ci'
+import UserMenu from "./UserMenu";
 
 
-interface UserData {
+export interface UserData {
   apiKey: string;
   appName: string;
   bio: string;
@@ -131,7 +132,7 @@ const page: React.FC<pageProps> = ({ user }) => {
           </Flex>
           <Flex align="center">
             <Icon mr={2} fontSize={35} as={CiSettings}></Icon>
-            <Icon fontSize={30} as={AiOutlineMenu}></Icon>
+            <UserMenu user={user} userData={userData}/>
           </Flex>
         </Flex>
 
