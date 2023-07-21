@@ -1,49 +1,45 @@
-import { UserDetails } from '@/components/loginsignup/CreateAccount/CreateAccount';
-import { firestore } from '@/firebase/clientApp';
-import { Flex,Text} from '@chakra-ui/react';
-import { query, collection, where, getDocs, doc, getDoc, DocumentReference, DocumentData, Query } from 'firebase/firestore';
-import { GetServerSidePropsContext, GetStaticProps } from 'next';
-import { useRouter } from 'next/navigation';
-import React from 'react';
-
-
-async function getUser(uid: string){
-    try {
-        const userDocRef = doc(firestore, "users", uid);
-        const userDoc = await getDoc(userDocRef);
-        const userInfo = { id: userDoc.id, ...userDoc.data() };
-        return userInfo
-      } catch (error) {
-        console.log(error);
-      }
-      
-}
-
+"use client";
+import { UserData } from "@/components/userpage/UserHome";
+import { firestore } from "@/firebase/clientApp";
+import { Flex } from "@chakra-ui/react";
+import { doc, getDoc } from "firebase/firestore";
+import React from "react";
 
 type pageProps = {
-    userData: UserDetails
-    userQuery: Query<DocumentData, DocumentData>
-    uid: string
-    test:string
-    searchParams: any
+  uid:string
 };
 
+export default function Page({ params }: { params: { uid: string } }) {
+  const [profileData, setProfileData] = React.useState<UserData>();
+  const [loading, setLoading] = React.useState(false);
 
-export default async function Page({
-    params,
-  }: {
-    params: { uid: string }
-  }) {
+  //function to get all the user details from firestore
+  const getUserDetails = async () => {
+    setLoading(true);
+    try {
+      const userDocRef = doc(firestore, "users", params.uid);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        const userInfo = { id: userDoc.id, ...userDoc.data() };
+        setProfileData(userInfo as UserData);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const userData = await getUser(params.uid)
+  React.useEffect(() => {
+    getUserDetails();
+  }, []);
 
-    console.log(userData)
+  React.useEffect(() => {
+    console.log(profileData);
+  }, [profileData]);
 
-
-
-    return (
-        <div>Hi</div>
-    )
-  }
-
-
+  return (
+    <>
+    <Flex>{profileData && profileData.displayName}</Flex>
+    </>
+  )
+}
