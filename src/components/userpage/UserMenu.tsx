@@ -38,12 +38,6 @@ const UserMenu: React.FC<UserMenuProps> = ({user,userData}) => {
     await signOut(auth);
   };
 
-  React.useEffect(() => {
-    console.log(userData!.uid)
-    console.log(user?.uid)
-  },[])
-
-
   return (
     <Menu>
       <MenuButton
