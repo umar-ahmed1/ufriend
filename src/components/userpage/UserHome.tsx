@@ -20,6 +20,10 @@ import { IoSparkles } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import {CiSettings} from 'react-icons/ci'
 import UserMenu from "./UserMenu";
+import MessageBox from "../messaging/MessageBox";
+import LeftSection from "./LeftSection";
+import MiddleSection from "./MiddleSection";
+import RightSection from "./RightSection";
 
 
 export interface UserData {
@@ -92,59 +96,9 @@ const page: React.FC<pageProps> = ({ user }) => {
   return (
     <>
       <PageContent>
-        <Flex
-          width="100%"
-          height="50px"
-          align="center"
-          pl={3}
-          pr={3}
-          justify="space-between"
-        >
-          <Flex align='center'>
-            {userData?.photoURL ? (
-              <Image
-                width="40px"
-                height="40px"
-                borderRadius="full"
-                mr={1}
-                color="gray.300"
-                src={`${userData.photoURL}`}
-              />
-            ) : (
-              <Icon fontSize={40} mr={1} color="brand.100" as={AiOutlineUser} />
-            )}
-            <Flex
-              direction="column"
-              display={{ base: "none", lg: "flex" }}
-              fontSize="8pt"
-              align="flex-start"
-              ml={1}
-            >
-              <Text fontWeight={700} fontSize={12}>
-                {(userData && userData.displayName) ||
-                  user.email?.split("@")[0]}
-              </Text>
-              <Flex align="center">
-                <Icon as={IoSparkles} color="brand.100" mr={1} />
-                <Text fontSize={12} color="gray.400">1 karma</Text>
-              </Flex>
-            </Flex>
-          </Flex>
-          <Flex align="center">
-            <Icon mr={2} fontSize={35} as={CiSettings}></Icon>
-            <UserMenu user={user} userData={userData}/>
-          </Flex>
-        </Flex>
-
-        <Flex width="100%" height="50px" align='center' justify='center'>
-          <Text color='brand.100' fontSize={40}>Friend of the Day</Text>
-        </Flex>
-
-        <Flex width="100%" height="50px" align="center" justify="center">
-          <Button mr={{ base: 1, md: 3 }}>Events</Button>
-          <Button mr={{ base: 1, md: 3 }}>Tutors</Button>
-          <Button onClick={() => router.push("/about")}>Classes</Button>
-        </Flex>
+        <LeftSection userData={userData}/>
+        <MiddleSection userData={userData}/>
+        <RightSection userData={userData}/>
       </PageContent>
     </>
   );
