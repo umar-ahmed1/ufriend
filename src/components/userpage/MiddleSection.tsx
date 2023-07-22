@@ -30,7 +30,7 @@ const MiddleSection:React.FC<MiddleSectionProps> = ({userData}) => {
           bottom="0"
           width="100%"
           height="30%"
-          background="linear-gradient(rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.5),rgba(0,0,0,0.7), rgba(0, 0, 0, 0.9))"
+          background="linear-gradient(rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.6),rgba(0,0,0,0.8), rgba(0, 0, 0, 0.9))"
           pointerEvents="none"
         />
         {/* The content of the box */}
@@ -43,9 +43,9 @@ const MiddleSection:React.FC<MiddleSectionProps> = ({userData}) => {
           padding="20px"
           color="white" 
         >
-          <Text fontSize={25} fontWeight={700}>{userData!.displayName}</Text>
-          <Text fontSize={25}>{`${userData!.major}, ${userData!.yearOfProgram}rd year`}</Text>
-          <Text fontSize={18}>{userData!.bio}</Text>
+          <Text fontSize={35} fontWeight={700} color='brand.100'>{userData && userData.displayName}</Text>
+          <Text fontSize={25}>{`${userData && userData.major}, ${userData && userData.yearOfProgram}rd year`}</Text>
+          <Text fontSize={18} >{userData && userData.bio}</Text>
         </Box>
       </Flex>
     </Flex>
