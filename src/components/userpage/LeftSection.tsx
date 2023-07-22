@@ -63,7 +63,7 @@ const LeftSection: React.FC<LeftSectionProps> = ({userData}) => {
           <UserMenu user={user} userData={userData} />
         </Flex>
       </Flex>
-      <MessageBox />
+      <MessageBox userData={userData}/>
     </Flex>
   );
 };
