@@ -15,6 +15,13 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
   selectedCategory,
   setSelectedCategory,
 }) => {
+
+  const getMessagedUsers = async () => {
+
+
+  }
+
+
   return (
     <Flex width="100%" height="94vh" direction="column" borderRight='1px solid grey'>
       <Flex pl={4} justify="flex-start" align="center" mt={4} width="40%">
