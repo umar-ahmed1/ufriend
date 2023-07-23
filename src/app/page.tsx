@@ -15,11 +15,6 @@ export default function Home() {
   const setModalState = useSetRecoilState(authModalState);
   const [user] = useAuthState(auth)
 
-  React.useEffect(() => {
-    console.log(user)
-  })
-
-
   return (
     <>
       <AuthModal/>

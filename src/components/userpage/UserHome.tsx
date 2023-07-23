@@ -69,11 +69,7 @@ const page: React.FC<pageProps> = ({ user}) => {
     getUserDetails();
   }, [user]);
 
-  //get all the user info
-  React.useEffect(() => {
-    console.log(userData);
-  }, [userData]);
-
+  
   const logout = async () => {
     await signOut(auth);
   };
