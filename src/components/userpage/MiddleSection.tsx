@@ -18,6 +18,7 @@ const MiddleSection:React.FC<MiddleSectionProps> = ({userData,selectedCategory,s
   const [loading,setLoading] = React.useState(false)
   const [user] = useAuthState(auth)
   const [fotd,setFotd] = React.useState<UserData>()
+
   //function to get all the user details from firestore
   const getFOTD = async () => {
     setLoading(true);
@@ -40,16 +41,18 @@ const MiddleSection:React.FC<MiddleSectionProps> = ({userData,selectedCategory,s
     }
   };
 
+
   React.useEffect(() =>{
     getFOTD()
   },[])
+  
   
   return (
     <Flex direction='column' width='100%'>
       <Flex width="100%" height="6vh" align='center' justify='center' borderBottom='1px solid grey' borderRight='1px solid grey'>
         <Text color='brand.100' fontSize={40}>{selectedCategory == 'FOTD' ? 'Friend of the Day' : 'Messenger'}</Text>
       </Flex>
-      {selectedCategory=='FOTD' && <UserShowcase userData={fotd}/>}
+      {selectedCategory=='FOTD' && <UserShowcase userData={fotd} type={'middle'} setSelectedCategory={setSelectedCategory} />}
       {selectedCategory=='Messages' && <MessageBox userData={userData}/>}
     </Flex>
   );

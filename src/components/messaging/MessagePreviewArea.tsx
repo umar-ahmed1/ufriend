@@ -32,7 +32,6 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
           mr={4}
           _hover={{ cursor: "pointer", textDecoration: "underline" }}
           textDecoration={selectedCategory == "Messages" ? "underline" : "none"}
-          onClick = {() => setSelectedCategory('Messages')}
         >
           Messages
         </Text>

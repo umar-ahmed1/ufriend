@@ -27,7 +27,7 @@ const RightSection: React.FC<RightSectionProps> = ({
         <Button mr={{ base: 1, md: 3 }}>Tutors</Button>
         <Button onClick={() => router.push("/about")}>Classes</Button>
       </Flex>
-      {selectedCategory == "Messages" && <UserShowcase userData={userData}/>}
+      {selectedCategory == "Messages" && <UserShowcase userData={userData} type={'right'}/>}
     </Flex>
   );
 };
