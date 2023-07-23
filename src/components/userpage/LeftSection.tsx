@@ -29,7 +29,6 @@ const LeftSection: React.FC<LeftSectionProps> = ({userData,selectedCategory,setS
         pr={3}
         justify="space-between"
         borderRight='1px solid grey'
-        borderBottom='1px solid red'
       >
         <Flex align="center">
           {userData?.photoURL ? (
