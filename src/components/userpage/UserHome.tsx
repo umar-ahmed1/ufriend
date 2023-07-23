@@ -20,7 +20,7 @@ import { IoSparkles } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import {CiSettings} from 'react-icons/ci'
 import UserMenu from "./UserMenu";
-import MessageBox from "../messaging/MessageBox";
+import MessageBox from "../messaging/MessagePreviewArea";
 import LeftSection from "./LeftSection";
 import MiddleSection from "./MiddleSection";
 import RightSection from "./RightSection";
@@ -58,9 +58,10 @@ type pageProps = {
   user: User;
 };
 
-const page: React.FC<pageProps> = ({ user }) => {
+const page: React.FC<pageProps> = ({ user}) => {
   const [loading, setLoading] = React.useState(true);
   const [userData, setUserData] = React.useState<UserData>();
+  const [selectedCategory,setSelectedCategory] = React.useState('FOTD')
   const router = useRouter();
 
   //get all the user info
@@ -93,12 +94,14 @@ const page: React.FC<pageProps> = ({ user }) => {
     }
   };
 
+
+
   return (
     <>
       <PageContent>
-        <LeftSection userData={userData}/>
-        <MiddleSection userData={userData}/>
-        <RightSection userData={userData}/>
+        <LeftSection userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
+        <MiddleSection userData={userData } selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
+        <RightSection userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
       </PageContent>
     </>
   );

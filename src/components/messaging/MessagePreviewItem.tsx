@@ -5,14 +5,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { AiOutlineUser } from "react-icons/ai";
 import { UserData } from "../userpage/UserHome";
 
-type MessagePreviewProps = {
+type MessagePreviewItemProps = {
   userData?: UserData;
+  selectedCategory: string;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const MessagePreview: React.FC<MessagePreviewProps> = ({ userData }) => {
+const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({ userData,selectedCategory,setSelectedCategory }) => {
   const [user] = useAuthState(auth);
   return (
-    <Flex align="center" maxHeight='60px' width='100%' _hover={{cursor:'pointer',outline: "1px solid", outlineColor: "grey.200"}} borderRadius='full' pt={1} pb={1}>
+    <Flex align="center" maxHeight='60px' width='100%' _hover={{cursor:'pointer',outline: "1px solid", outlineColor: "grey.200"}} borderRadius='full' pt={1} pb={1} onClick={() => setSelectedCategory('Messages')}>
       {userData?.photoURL ? (
         <Image
           width="50px"
@@ -46,4 +48,4 @@ const MessagePreview: React.FC<MessagePreviewProps> = ({ userData }) => {
     </Flex>
   );
 };
-export default MessagePreview;
+export default MessagePreviewItem;

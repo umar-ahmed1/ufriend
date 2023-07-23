@@ -26,8 +26,7 @@ const PageContent:React.FC<PageContentProps> = ({children}) => {
                 {/*RHS*/}
                 <Flex 
                     direction='column' 
-                    display={{base:'none',md:'flex'}}
-                    flexGrow={1}
+                    width={{base:'45%',md:'25%'}}
                 >
                     {children && children[2 as keyof typeof children]}
                 </Flex>

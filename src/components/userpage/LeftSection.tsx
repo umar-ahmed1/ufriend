@@ -6,15 +6,18 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { AiOutlineUser } from "react-icons/ai";
 import { CiSettings } from "react-icons/ci";
 import { IoSparkles } from "react-icons/io5";
-import MessageBox from "../messaging/MessageBox";
+import MessageBox from "../messaging/MessagePreviewArea";
 import UserMenu from "./UserMenu";
 import { UserData } from "./UserHome";
+import MessagePreviewArea from "../messaging/MessagePreviewArea";
 
 type LeftSectionProps = {
   userData?: UserData;
+  selectedCategory: string;
+  setSelectedCategory:React.Dispatch<React.SetStateAction<string>>
 };
 
-const LeftSection: React.FC<LeftSectionProps> = ({userData}) => {
+const LeftSection: React.FC<LeftSectionProps> = ({userData,selectedCategory,setSelectedCategory}) => {
   const [user] = useAuthState(auth);
   return (
     <Flex width="100%" direction="column">
@@ -25,7 +28,8 @@ const LeftSection: React.FC<LeftSectionProps> = ({userData}) => {
         pl={3}
         pr={3}
         justify="space-between"
-        border="1px solid red"
+        borderRight='1px solid grey'
+        borderBottom='1px solid red'
       >
         <Flex align="center">
           {userData?.photoURL ? (
@@ -60,10 +64,10 @@ const LeftSection: React.FC<LeftSectionProps> = ({userData}) => {
         </Flex>
         <Flex align="center">
           <Icon mr={2} fontSize={35} as={CiSettings}></Icon>
-          <UserMenu user={user} userData={userData} />
+          <UserMenu user={user} userData={userData}/>
         </Flex>
       </Flex>
-      <MessageBox userData={userData}/>
+      <MessagePreviewArea userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
     </Flex>
   );
 };
