@@ -22,7 +22,6 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({ userData, type,setSelectedC
   const handleMessageFOTD = async () => {
     try{
       setLoading(true)
-      console.log("hi")
       await runTransaction(firestore,async(transaction) => {
         const userDocRef = doc(firestore,`users/${user?.uid}/friends`,userData!.uid)
         const friendDocRef = doc(firestore,`users/${userData?.uid}/friends`,user!.uid)

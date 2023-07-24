@@ -37,8 +37,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   const [loading, setLoading] = React.useState(false);
   const [messageContents, setMessageContents] = React.useState("");
   const [user] = useAuthState(auth);
-  const [messagingStateValue, setMessagingStateValue] =
-    useRecoilState(messagingState);
+  const [messagingStateValue, setMessagingStateValue] = useRecoilState(messagingState);
 
   const sendMessage = async () => {
     if (messageContents == "") {
@@ -59,6 +58,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
       currentMessages: [...prev.currentMessages, message],
     }));
     setLoading(false);
+    setMessageContents("")
   };
 
   const getMessages = async () => {
@@ -90,31 +90,47 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
     getMessages();
   }, [messagingStateValue.currentFriend]);
 
+  React.useEffect(() => {
+    console.log("SEndmessage", messagingStateValue);
+  }, [messagingStateValue]);
+
+
+  // Create a ref for the inner container (Box)
+  const messagesContainerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    // Scroll to the bottom of the container when the messages update
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messagingStateValue.currentMessages]);
+
   return (
     <Flex
       width="100%"
       height="94vh"
-      maxHeight="94vh"
       direction="column"
       position="relative"
       overflow="hidden"
     >
       <Box
-    maxHeight="100%" // set the maximum height of the inner container
-    overflow="auto" // enable scrolling for the inner container
-    px={4} // optional padding to create space between content and scrollbar
-  >
-    <Flex direction='column' mt={4}>
-    {messagingStateValue.currentMessages?.map((message, index) => (
-        <Message
-          key={index}
-          contents={message.contents}
-          sender={message.sentBy == user!.uid ? "me" : "you"}
-        />
-      ))}
-    </Flex>
-    
-    </Box>
+        height='100%'
+        maxHeight="calc(94vh - 100px)"
+        overflow="auto"
+        px={4} 
+        ref={messagesContainerRef}
+        flex={1}
+      >
+        <Flex direction="column" mt={4}>
+          {messagingStateValue.currentMessages?.map((message, index) => (
+            <Message
+              key={index}
+              contents={message.contents}
+              sender={message.sentBy == user!.uid ? "me" : "you"}
+            />
+          ))}
+        </Flex>
+      </Box>
       <Flex
         position="absolute"
         bottom="0"
