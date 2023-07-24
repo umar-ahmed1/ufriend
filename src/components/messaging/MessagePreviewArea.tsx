@@ -1,6 +1,8 @@
 "use client";
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import React from "react";
+import { useRecoilState } from "recoil";
+import { messagingState } from "../atoms/messagingAtom";
 import { UserData } from "../userpage/UserHome";
 import MessagePreviewItem from "./MessagePreviewItem";
 
@@ -16,12 +18,7 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
   setSelectedCategory,
 }) => {
 
-  const getMessagedUsers = async () => {
-
-
-  }
-
-
+  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
   return (
     <Flex width="100%" height="94vh" direction="column" borderRight='1px solid grey'>
       <Flex pl={4} justify="flex-start" align="center" mt={4} width="40%">
@@ -48,13 +45,16 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
       </Flex>
 
       <Stack mt={4} pl={4} pr={4} spacing={5} width="100%">
-        <MessagePreviewItem userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
-        <MessagePreviewItem userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
-        <MessagePreviewItem userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
-        <MessagePreviewItem userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
-        <MessagePreviewItem userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
+      {
+        messagingStateValue.myFriends.map((friendData) => (
+          <MessagePreviewItem userData={friendData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
+        ))
+      }
       </Stack>
     </Flex>
   );
 };
 export default MessagePreviewArea;
+
+
+

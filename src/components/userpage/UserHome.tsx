@@ -24,6 +24,8 @@ import MessageBox from "../messaging/MessagePreviewArea";
 import LeftSection from "./LeftSection";
 import MiddleSection from "./MiddleSection";
 import RightSection from "./RightSection";
+import { messagingState } from "../atoms/messagingAtom";
+import { useRecoilState } from "recoil";
 
 
 export interface UserData {
@@ -58,15 +60,17 @@ type pageProps = {
   user: User;
 };
 
-const page: React.FC<pageProps> = ({ user}) => {
+const page: React.FC<pageProps> = ({user}) => {
   const [loading, setLoading] = React.useState(true);
   const [userData, setUserData] = React.useState<UserData>();
   const [selectedCategory,setSelectedCategory] = React.useState('FOTD')
+  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
   const router = useRouter();
 
-  //get all the user info
+  //get all the user info and friend info
   React.useEffect(() => {
     getUserDetails();
+    getFriends()
   }, [user]);
 
   
@@ -89,6 +93,40 @@ const page: React.FC<pageProps> = ({ user}) => {
       console.log(error);
     }
   };
+
+  const getFriends = async () => {
+    if(messagingStateValue.friendsFetched == true){
+      return
+    }
+    const userDocRef = doc(firestore, "users", user!.uid);
+    const friendsDocsRef = collection(userDocRef,"friends")
+    const friendsDocs = await getDocs(friendsDocsRef)
+    const friendIds = friendsDocs.docs.map((friendDoc) => friendDoc.id)
+    // Get user data of each friend
+    const friendsDataPromises = friendIds.map(async (friendId) => {
+      const friendDocRef = doc(firestore, "users", friendId);
+      const friendDoc = await getDoc(friendDocRef);
+      if (friendDoc.exists()) {
+        return { id: friendDoc.id, ...friendDoc.data() };
+      } else {
+        // Handle case when a friend document is not found
+        return null;
+      }
+    });
+
+    // Resolve all promises to get friend data
+    const friendsData = await Promise.all(friendsDataPromises);
+    setMessagingStateValue((prev) => ({
+      ...prev,
+      myFriends: friendsData as UserData[],
+      friendsFetched: true
+    }))
+
+  }
+
+  React.useEffect(() => {
+    console.log(messagingStateValue)
+  })
 
 
 
