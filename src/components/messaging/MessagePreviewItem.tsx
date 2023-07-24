@@ -28,7 +28,6 @@ const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({
       ...prev,
       currentFriend: userData
     }))
-    console.log(messagingStateValue)
   }
 
 

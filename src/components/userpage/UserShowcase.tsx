@@ -4,6 +4,8 @@ import { doc, runTransaction, serverTimestamp, updateDoc } from "firebase/firest
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AiOutlineUser } from "react-icons/ai";
+import { useRecoilState } from "recoil";
+import { messagingState } from "../atoms/messagingAtom";
 import { UserData } from "./UserHome";
 
 type UserShowcaseProps = {
@@ -15,9 +17,9 @@ type UserShowcaseProps = {
 const UserShowcase: React.FC<UserShowcaseProps> = ({ userData, type,setSelectedCategory}) => {
   const [user] = useAuthState(auth)
   const [loading,setLoading] = React.useState(false)
+  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
 
   const handleMessageFOTD = async () => {
-    setSelectedCategory('Messages')
     try{
       setLoading(true)
       console.log("hi")
@@ -33,7 +35,30 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({ userData, type,setSelectedC
           added: serverTimestamp()
         })
       })
+
+      setMessagingStateValue((prev) => {
+        // Check if userData is already in myFriends
+        const isFriendAlreadyAdded = prev.myFriends.some(
+          (friend) => friend.id === userData!.id
+        );
       
+        // If userData is not already in myFriends, add it
+        if (!isFriendAlreadyAdded) {
+          return {
+            ...prev,
+            myFriends: [...prev.myFriends, userData as UserData],
+            currentFriend: userData,
+          };
+        }
+      
+        // If userData is already in myFriends, just set it as the currentFriend
+        return {
+          ...prev,
+          currentFriend: userData,
+        };
+      });
+      
+      setSelectedCategory('Messages')
       setLoading(false)
     } catch(error: any){
       console.log(error.message)
