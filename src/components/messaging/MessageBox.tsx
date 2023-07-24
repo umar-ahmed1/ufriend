@@ -26,8 +26,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   const [messageContents, setMessageContents] = React.useState("");
   const [user] = useAuthState(auth)
   const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
-  const [allMessages,setAllMessages] = React.useState<DocumentData[]>()
-
 
   const sendMessage = async () => {
     if (messageContents == ''){
@@ -48,8 +46,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
       currentMessages:[...prev.currentMessages,message]
     }))
     setLoading(false)
-
-    console.log(message)
   };
 
   const getMessages = async () => {
@@ -86,7 +82,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
     >
       <Text>{messagingStateValue.currentFriend?.displayName}</Text>
       {
-        allMessages?.map((message,index) => (
+        messagingStateValue.currentMessages?.map((message,index) => (
           <Message key={index} contents={message.contents} sender={message.sentBy == user!.uid ? "me" : "you"}/>
         ))
       }
