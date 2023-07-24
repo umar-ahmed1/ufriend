@@ -1,5 +1,5 @@
 import { auth, firestore } from "@/firebase/clientApp";
-import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import {
   collection,
   doc,
@@ -62,8 +62,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   };
 
   const getMessages = async () => {
-    // Set up real-time listener for new messages
-    const unsubscribe = onSnapshot(
+    // Set up real-time listener for new messages that match the query
+    const listenForMessages = onSnapshot(
       query(
         collection(firestore, "messages"),
         where("sentBy", "in", [
@@ -94,18 +94,27 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
     <Flex
       width="100%"
       height="94vh"
+      maxHeight="94vh"
       direction="column"
       position="relative"
-      mt={4}
+      overflow="hidden"
     >
-      <Text>{messagingStateValue.currentFriend?.displayName}</Text>
-      {messagingStateValue.currentMessages?.map((message, index) => (
+      <Box
+    maxHeight="100%" // set the maximum height of the inner container
+    overflow="auto" // enable scrolling for the inner container
+    px={4} // optional padding to create space between content and scrollbar
+  >
+    <Flex direction='column' mt={4}>
+    {messagingStateValue.currentMessages?.map((message, index) => (
         <Message
           key={index}
           contents={message.contents}
           sender={message.sentBy == user!.uid ? "me" : "you"}
         />
       ))}
+    </Flex>
+    
+    </Box>
       <Flex
         position="absolute"
         bottom="0"
