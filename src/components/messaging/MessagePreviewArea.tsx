@@ -46,8 +46,8 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
 
       <Stack mt={4} pl={4} pr={4} spacing={5} width="100%">
       {
-        messagingStateValue.myFriends.map((friendData) => (
-          <MessagePreviewItem userData={friendData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
+        messagingStateValue.myFriends.map((friendData,index) => (
+          <MessagePreviewItem key={index} userData={friendData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
         ))
       }
       </Stack>

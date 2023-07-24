@@ -124,12 +124,6 @@ const page: React.FC<pageProps> = ({user}) => {
 
   }
 
-  React.useEffect(() => {
-    console.log(messagingStateValue)
-  })
-
-
-
   return (
     <>
       <PageContent>

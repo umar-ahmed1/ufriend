@@ -1,8 +1,11 @@
 import { auth, firestore } from "@/firebase/clientApp";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
-import { collection, doc, serverTimestamp, setDoc, Timestamp } from "firebase/firestore";
+import { collection, doc, DocumentData, getDocs, orderBy, query, serverTimestamp, setDoc, Timestamp, where } from "firebase/firestore";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useRecoilState } from "recoil";
+import { MessageChannel } from "worker_threads";
+import { messagingState } from "../atoms/messagingAtom";
 import { UserDetails } from "../loginsignup/CreateAccount/CreateAccount";
 import Message from "./Message";
 
@@ -22,6 +25,9 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   const [loading,setLoading] = React.useState(false)
   const [messageContents, setMessageContents] = React.useState("");
   const [user] = useAuthState(auth)
+  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
+  const [allMessages,setAllMessages] = React.useState<DocumentData[]>()
+
 
   const sendMessage = async () => {
     if (messageContents == ''){
@@ -32,17 +38,37 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
     const message: Message = {
         id: messageDocRef.id,
         sentBy: user!.uid,
-        sentTo: 'test',
+        sentTo: messagingStateValue.currentFriend!.uid,
         contents:messageContents,
         createdAt: serverTimestamp() as Timestamp
     }
-
     await setDoc(messageDocRef,message)
     setLoading(false)
 
     console.log(message)
-
   };
+
+  const getMessages = async () => {
+    const messagesRef = collection(firestore,"messages")
+    // Create the query
+    const messagesQuery = query(
+      messagesRef,
+      where("sentBy", "==", user!.uid),
+      where("sentTo", "==", messagingStateValue.currentFriend!.uid),
+      orderBy("createdAt")
+    );
+
+    // Execute the query
+    const querySnapshot = await getDocs(messagesQuery);
+    // Extract the messages from the querySnapshot
+    const messages = querySnapshot.docs.map((doc) => doc.data());
+    console.log(messages)
+    setAllMessages(messages)
+  }
+
+  React.useEffect(() => {
+    getMessages()
+  },[messagingStateValue.currentFriend])
 
   return (
     <Flex
@@ -52,11 +78,12 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
       position="relative"
       mt={4}
     >
-      <Message sender="me" />
-      <Message sender="me" />
-      <Message sender="you" />
-      <Message sender="me" />
-      <Message sender="you" />
+      <Text>{messagingStateValue.currentFriend?.displayName}</Text>
+      {
+        allMessages?.map((message,index) => (
+          <Message key={index} contents={message.contents} sender={message.sentBy == user!.uid ? "me" : "you"}/>
+        ))
+      }
       <Flex
         position="absolute"
         bottom="0"

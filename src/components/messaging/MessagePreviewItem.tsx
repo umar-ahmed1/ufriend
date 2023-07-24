@@ -3,6 +3,8 @@ import { Flex, Icon, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AiOutlineUser } from "react-icons/ai";
+import { useRecoilState } from "recoil";
+import { messagingState } from "../atoms/messagingAtom";
 import { UserData } from "../userpage/UserHome";
 
 type MessagePreviewItemProps = {
@@ -11,10 +13,40 @@ type MessagePreviewItemProps = {
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({ userData,selectedCategory,setSelectedCategory }) => {
+const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({
+  userData,
+  selectedCategory,
+  setSelectedCategory,
+}) => {
+  
   const [user] = useAuthState(auth);
+  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
+
+  const handleClick = () => {
+    setSelectedCategory("Messages")
+    setMessagingStateValue((prev) => ({
+      ...prev,
+      currentFriend: userData
+    }))
+    console.log(messagingStateValue)
+  }
+
+
   return (
-    <Flex align="center" maxHeight='60px' width='100%' _hover={{cursor:'pointer',outline: "1px solid", outlineColor: "grey.200"}} borderRadius='full' pt={1} pb={1} onClick={() => setSelectedCategory('Messages')}>
+    <Flex
+      align="center"
+      maxHeight="60px"
+      width="100%"
+      _hover={{
+        cursor: "pointer",
+        outline: "1px solid",
+        outlineColor: "grey.200",
+      }}
+      borderRadius="full"
+      pt={1}
+      pb={1}
+      onClick={handleClick}
+    >
       {userData?.photoURL ? (
         <Image
           width="50px"
@@ -29,19 +61,19 @@ const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({ userData,select
       )}
       <Flex
         direction="column"
-        maxWidth='100%'
+        maxWidth="100%"
         display={{ base: "none", lg: "flex" }}
         fontSize="8pt"
         align="flex-start"
         pl={1}
-        
       >
         <Text fontWeight={700} fontSize={14}>
           {(userData && userData.displayName) || user!.email?.split("@")[0]}
         </Text>
-        <Flex align="center" width='100%'>
-          <Text fontSize={13} color="gray.400" noOfLines={1} maxWidth='100%'>
-            insert brief details about the message heareafafrgwiogwogiwgrhwowoafoedafaejo
+        <Flex align="center" width="100%">
+          <Text fontSize={13} color="gray.400" noOfLines={1} maxWidth="100%">
+            insert brief details about the message
+            heareafafrgwiogwogiwgrhwowoafoedafaejo
           </Text>
         </Flex>
       </Flex>
