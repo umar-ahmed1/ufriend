@@ -1,6 +1,18 @@
 import { auth, firestore } from "@/firebase/clientApp";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
-import { collection, doc, DocumentData, getDocs, orderBy, query, serverTimestamp, setDoc, Timestamp, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  DocumentData,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  Timestamp,
+  where,
+} from "firebase/firestore";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
@@ -14,63 +26,69 @@ type MessageBoxProps = {
 };
 
 export type Message = {
-    id:string
-    sentBy:string,
-    sentTo:string,
-    contents:string,
-    createdAt:Timestamp,
-}
+  id: string;
+  sentBy: string;
+  sentTo: string;
+  contents: string;
+  createdAt: Timestamp;
+};
 
 const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
-  const [loading,setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
   const [messageContents, setMessageContents] = React.useState("");
-  const [user] = useAuthState(auth)
-  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
+  const [user] = useAuthState(auth);
+  const [messagingStateValue, setMessagingStateValue] =
+    useRecoilState(messagingState);
 
   const sendMessage = async () => {
-    if (messageContents == ''){
-        return
+    if (messageContents == "") {
+      return;
     }
-    setLoading(true)
-    const messageDocRef = doc(collection(firestore,'messages'))
+    setLoading(true);
+    const messageDocRef = doc(collection(firestore, "messages"));
     const message: Message = {
-        id: messageDocRef.id,
-        sentBy: user!.uid,
-        sentTo: messagingStateValue.currentFriend!.uid,
-        contents:messageContents,
-        createdAt: serverTimestamp() as Timestamp
-    }
-    await setDoc(messageDocRef,message)
+      id: messageDocRef.id,
+      sentBy: user!.uid,
+      sentTo: messagingStateValue.currentFriend!.uid,
+      contents: messageContents,
+      createdAt: serverTimestamp() as Timestamp,
+    };
+    await setDoc(messageDocRef, message);
     setMessagingStateValue((prev) => ({
       ...prev,
-      currentMessages:[...prev.currentMessages,message]
-    }))
-    setLoading(false)
+      currentMessages: [...prev.currentMessages, message],
+    }));
+    setLoading(false);
   };
 
   const getMessages = async () => {
-    const messagesRef = collection(firestore,"messages")
-   // Create the query
-   const messagesQuery = query(
-    messagesRef,
-    where("sentBy", "in", [user!.uid, messagingStateValue.currentFriend!.uid]),
-    where("sentTo", "in", [user!.uid, messagingStateValue.currentFriend!.uid]),
-    orderBy("createdAt")
-  );
-
-    // Execute the query
-    const querySnapshot = await getDocs(messagesQuery);
-    // Extract the messages from the querySnapshot
-    const messages = querySnapshot.docs.map((doc) => doc.data());
-    setMessagingStateValue((prev) => ({
-      ...prev,
-      currentMessages:messages as Message[]
-    }))
-  }
+    // Set up real-time listener for new messages
+    const unsubscribe = onSnapshot(
+      query(
+        collection(firestore, "messages"),
+        where("sentBy", "in", [
+          user!.uid,
+          messagingStateValue.currentFriend!.uid,
+        ]),
+        where("sentTo", "in", [
+          user!.uid,
+          messagingStateValue.currentFriend!.uid,
+        ]),
+        orderBy("createdAt")
+      ),
+      (querySnapshot) => {
+        const messages = querySnapshot.docs.map((doc) => doc.data());
+        setMessagingStateValue((prev) => ({
+          ...prev,
+          currentMessages: messages as Message[],
+        }));
+      }
+    );
+  };
 
   React.useEffect(() => {
-    getMessages()
-  },[messagingStateValue.currentFriend])
+    getMessages();
+  }, [messagingStateValue.currentFriend]);
 
   return (
     <Flex
@@ -81,11 +99,13 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
       mt={4}
     >
       <Text>{messagingStateValue.currentFriend?.displayName}</Text>
-      {
-        messagingStateValue.currentMessages?.map((message,index) => (
-          <Message key={index} contents={message.contents} sender={message.sentBy == user!.uid ? "me" : "you"}/>
-        ))
-      }
+      {messagingStateValue.currentMessages?.map((message, index) => (
+        <Message
+          key={index}
+          contents={message.contents}
+          sender={message.sentBy == user!.uid ? "me" : "you"}
+        />
+      ))}
       <Flex
         position="absolute"
         bottom="0"
