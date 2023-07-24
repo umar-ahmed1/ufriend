@@ -56,7 +56,7 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
             userData={friendData}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
-            contents={"hehehe"}
+            contents={friendData.latestMessage || ""}
           />
         ))}
       </Stack>
