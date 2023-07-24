@@ -8,6 +8,8 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -54,6 +56,7 @@ export interface UserData {
   uid: string;
   university: string;
   yearOfProgram: string;
+  latestMessage?:string;
 }
 
 type pageProps = {
@@ -95,34 +98,50 @@ const page: React.FC<pageProps> = ({user}) => {
   };
 
   const getFriends = async () => {
-    if(messagingStateValue.friendsFetched == true){
-      return
+    if (messagingStateValue.friendsFetched === true) {
+      return;
     }
     const userDocRef = doc(firestore, "users", user!.uid);
-    const friendsDocsRef = collection(userDocRef,"friends")
-    const friendsDocs = await getDocs(friendsDocsRef)
-    const friendIds = friendsDocs.docs.map((friendDoc) => friendDoc.id)
-    // Get user data of each friend
+    const friendsDocsRef = collection(userDocRef, "friends");
+    const friendsDocs = await getDocs(friendsDocsRef);
+    const friendIds = friendsDocs.docs.map((friendDoc) => friendDoc.id);
+  
+    // Get user data and latest messages for each friend
     const friendsDataPromises = friendIds.map(async (friendId) => {
       const friendDocRef = doc(firestore, "users", friendId);
       const friendDoc = await getDoc(friendDocRef);
+  
       if (friendDoc.exists()) {
-        return { id: friendDoc.id, ...friendDoc.data() };
+        const friendData = { id: friendDoc.id, ...friendDoc.data(), latestMessage:""};
+  
+        // Get the latest message from the user's subcollection "friends"
+        const latestMessageRef = doc(firestore,`users/${user?.uid}/friends`,friendData.id)
+        const latestMessage = await getDoc(latestMessageRef)
+        if(latestMessage.exists()){
+          let temp = latestMessage.data().latestMessage
+          friendData.latestMessage = temp
+        }
+        
+        return friendData;
       } else {
         // Handle case when a friend document is not found
         return null;
       }
     });
-
+  
     // Resolve all promises to get friend data
     const friendsData = await Promise.all(friendsDataPromises);
+  
     setMessagingStateValue((prev) => ({
       ...prev,
       myFriends: friendsData as UserData[],
-      friendsFetched: true
-    }))
-
-  }
+      friendsFetched: true,
+    }));
+  };
+  
+  React.useEffect(() => {
+    console.log(messagingStateValue)
+  },[])
 
   return (
     <>

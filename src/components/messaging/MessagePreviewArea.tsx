@@ -17,10 +17,15 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
   selectedCategory,
   setSelectedCategory,
 }) => {
-
-  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
+  const [messagingStateValue, setMessagingStateValue] =
+    useRecoilState(messagingState);
   return (
-    <Flex width="100%" height="94vh" direction="column" borderRight='1px solid grey'>
+    <Flex
+      width="100%"
+      height="94vh"
+      direction="column"
+      borderRight="1px solid grey"
+    >
       <Flex pl={4} justify="flex-start" align="center" mt={4} width="40%">
         <Text
           fontWeight={700}
@@ -38,23 +43,24 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
           color="brand.100"
           _hover={{ cursor: "pointer", textDecoration: "underline" }}
           textDecoration={selectedCategory == "FOTD" ? "underline" : "none"}
-          onClick = {() => setSelectedCategory('FOTD')}
+          onClick={() => setSelectedCategory("FOTD")}
         >
           FOTD
         </Text>
       </Flex>
 
       <Stack mt={4} pl={4} pr={4} spacing={5} width="100%">
-      {
-        messagingStateValue.myFriends.map((friendData,index) => (
-          <MessagePreviewItem key={index} userData={friendData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
-        ))
-      }
+        {messagingStateValue.myFriends.map((friendData, index) => (
+          <MessagePreviewItem
+            key={index}
+            userData={friendData}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            contents={"hehehe"}
+          />
+        ))}
       </Stack>
     </Flex>
   );
 };
 export default MessagePreviewArea;
-
-
-

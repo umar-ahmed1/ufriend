@@ -11,12 +11,14 @@ type MessagePreviewItemProps = {
   userData?: UserData;
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+  contents: string;
 };
 
 const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({
   userData,
   selectedCategory,
   setSelectedCategory,
+  contents,
 }) => {
   
   const [user] = useAuthState(auth);
@@ -71,8 +73,7 @@ const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({
         </Text>
         <Flex align="center" width="100%">
           <Text fontSize={13} color="gray.400" noOfLines={1} maxWidth="100%">
-            insert brief details about the message
-            heareafafrgwiogwogiwgrhwowoafoedafaejo
+            {contents}
           </Text>
         </Flex>
       </Flex>

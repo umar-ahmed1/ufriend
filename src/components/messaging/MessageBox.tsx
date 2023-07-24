@@ -11,6 +11,7 @@ import {
   serverTimestamp,
   setDoc,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import React from "react";
@@ -44,6 +45,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
       return;
     }
     setLoading(true);
+    //store the message
     const messageDocRef = doc(collection(firestore, "messages"));
     const message: Message = {
       id: messageDocRef.id,
@@ -53,12 +55,19 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
       createdAt: serverTimestamp() as Timestamp,
     };
     await setDoc(messageDocRef, message);
+    //update the message state
     setMessagingStateValue((prev) => ({
       ...prev,
       currentMessages: [...prev.currentMessages, message],
     }));
-    setLoading(false);
+    //now update the latest sent message
+    //in the person u sent to friends get ur uid snippet
+    const sentToRef = doc(firestore,`users/${messagingStateValue.currentFriend!.uid}/friends`,user!.uid)
+    await updateDoc(sentToRef,{
+      latestMessage:messageContents
+    })
     setMessageContents("")
+    setLoading(false);
   };
 
   const getMessages = async () => {

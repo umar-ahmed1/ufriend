@@ -27,11 +27,13 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({ userData, type,setSelectedC
         const friendDocRef = doc(firestore,`users/${userData?.uid}/friends`,user!.uid)
         transaction.set(userDocRef,{
           id:userData!.uid,
-          added: serverTimestamp()
+          added: serverTimestamp(),
+          latestMessage: ""
         })
         transaction.set(friendDocRef,{
           id:user!.uid,
-          added: serverTimestamp()
+          added: serverTimestamp(),
+          latestMessage: ""
         })
       })
 
