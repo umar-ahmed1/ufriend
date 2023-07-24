@@ -43,6 +43,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
         createdAt: serverTimestamp() as Timestamp
     }
     await setDoc(messageDocRef,message)
+    setMessagingStateValue((prev) => ({
+      ...prev,
+      currentMessages:[...prev.currentMessages,message]
+    }))
     setLoading(false)
 
     console.log(message)
@@ -50,20 +54,22 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
 
   const getMessages = async () => {
     const messagesRef = collection(firestore,"messages")
-    // Create the query
-    const messagesQuery = query(
-      messagesRef,
-      where("sentBy", "==", user!.uid),
-      where("sentTo", "==", messagingStateValue.currentFriend!.uid),
-      orderBy("createdAt")
-    );
+   // Create the query
+   const messagesQuery = query(
+    messagesRef,
+    where("sentBy", "in", [user!.uid, messagingStateValue.currentFriend!.uid]),
+    where("sentTo", "in", [user!.uid, messagingStateValue.currentFriend!.uid]),
+    orderBy("createdAt")
+  );
 
     // Execute the query
     const querySnapshot = await getDocs(messagesQuery);
     // Extract the messages from the querySnapshot
     const messages = querySnapshot.docs.map((doc) => doc.data());
-    console.log(messages)
-    setAllMessages(messages)
+    setMessagingStateValue((prev) => ({
+      ...prev,
+      currentMessages:messages as Message[]
+    }))
   }
 
   React.useEffect(() => {
