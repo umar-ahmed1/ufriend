@@ -1,6 +1,12 @@
 import { auth, firestore } from "@/firebase/clientApp";
 import { Flex, Icon, Image, Box, Text, Button } from "@chakra-ui/react";
-import { doc, runTransaction, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  runTransaction,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AiOutlineUser } from "react-icons/ai";
@@ -11,38 +17,61 @@ import { UserData } from "./UserHome";
 type UserShowcaseProps = {
   userData?: UserData;
   type: string;
-  setSelectedCategory:React.Dispatch<React.SetStateAction<string>>
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const UserShowcase: React.FC<UserShowcaseProps> = ({ userData, type,setSelectedCategory}) => {
-  const [user] = useAuthState(auth)
-  const [loading,setLoading] = React.useState(false)
-  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
+const UserShowcase: React.FC<UserShowcaseProps> = ({
+  userData,
+  type,
+  setSelectedCategory,
+}) => {
+  const [user] = useAuthState(auth);
+  const [loading, setLoading] = React.useState(false);
+  const [messagingStateValue, setMessagingStateValue] =
+    useRecoilState(messagingState);
 
   const handleMessageFOTD = async () => {
-    try{
-      setLoading(true)
-      await runTransaction(firestore,async(transaction) => {
-        const userDocRef = doc(firestore,`users/${user?.uid}/friends`,userData!.uid)
-        const friendDocRef = doc(firestore,`users/${userData?.uid}/friends`,user!.uid)
-        transaction.set(userDocRef,{
-          id:userData!.uid,
+    try {
+      setLoading(true);
+      await runTransaction(firestore, async (transaction) => {
+        //create refs to the docs
+        const userDocRef = doc(
+          firestore,
+          `users/${user?.uid}/friends`,
+          userData!.uid
+        );
+        const friendDocRef = doc(
+          firestore,
+          `users/${userData?.uid}/friends`,
+          user!.uid
+        );
+        //get the docs
+        const [userDoc, friendDoc] = await Promise.all([
+          getDoc(userDocRef),
+          getDoc(friendDocRef),
+        ]);
+        //if either exists then return
+        if (userDoc.exists() || friendDoc.exists()) {
+          return;
+        }
+        transaction.set(userDocRef, {
+          id: userData!.uid,
           added: serverTimestamp(),
-          latestMessage: ""
-        })
-        transaction.set(friendDocRef,{
-          id:user!.uid,
+          latestMessage: "",
+        });
+        transaction.set(friendDocRef, {
+          id: user!.uid,
           added: serverTimestamp(),
-          latestMessage: ""
-        })
-      })
+          latestMessage: "",
+        });
+      });
 
       setMessagingStateValue((prev) => {
         // Check if userData is already in myFriends
         const isFriendAlreadyAdded = prev.myFriends.some(
           (friend) => friend.id === userData!.id
         );
-      
+
         // If userData is not already in myFriends, add it
         if (!isFriendAlreadyAdded) {
           return {
@@ -51,22 +80,20 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({ userData, type,setSelectedC
             currentFriend: userData,
           };
         }
-      
+
         // If userData is already in myFriends, just set it as the currentFriend
         return {
           ...prev,
           currentFriend: userData,
         };
       });
-      
-      setSelectedCategory('Messages')
-      setLoading(false)
-    } catch(error: any){
-      console.log(error.message)
+
+      setSelectedCategory("Messages");
+      setLoading(false);
+    } catch (error: any) {
+      console.log(error.message);
     }
-  }
-
-
+  };
 
   return (
     <Flex width="100%" height="94vh" position="relative">
@@ -97,26 +124,34 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({ userData, type,setSelectedC
       >
         <Flex width="100%" align="center">
           <Flex width="100%" direction="column">
-            <Text fontSize={{base:20,sm:25,md:35}} fontWeight={700} color="brand.100">
+            <Text
+              fontSize={{ base: 20, sm: 25, md: 35 }}
+              fontWeight={700}
+              color="brand.100"
+            >
               {userData && userData.displayName}
             </Text>
-            <Text fontSize={{base:15,sm:20,md:25}}>{`${userData && userData.major}, ${
-              userData && userData.yearOfProgram
-            }rd year`}</Text>
-            <Text fontSize={{base:12,sm:15,md:18}}>{userData && userData.bio}</Text>
+            <Text fontSize={{ base: 15, sm: 20, md: 25 }}>{`${
+              userData && userData.major
+            }, ${userData && userData.yearOfProgram}rd year`}</Text>
+            <Text fontSize={{ base: 12, sm: 15, md: 18 }}>
+              {userData && userData.bio}
+            </Text>
           </Flex>
           <Flex height="100%">
-            {type == 'middle' && <Button
-              backgroundColor="brand.100"
-              _hover={{ cursor: "pointer", opacity: "0.9" }}
-              height={{base:'30px',md:'50px'}}
-              width={{base:'75%',md:'100%'}}
-              fontSize={{base:12,md:18}}
-              isLoading={loading}
-              onClick = {handleMessageFOTD}
-            >
-              Message
-            </Button>}
+            {type == "middle" && (
+              <Button
+                backgroundColor="brand.100"
+                _hover={{ cursor: "pointer", opacity: "0.9" }}
+                height={{ base: "30px", md: "50px" }}
+                width={{ base: "75%", md: "100%" }}
+                fontSize={{ base: 12, md: 18 }}
+                isLoading={loading}
+                onClick={handleMessageFOTD}
+              >
+                Message
+              </Button>
+            )}
           </Flex>
         </Flex>
       </Box>
