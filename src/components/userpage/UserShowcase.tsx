@@ -1,5 +1,5 @@
 import { auth, firestore } from "@/firebase/clientApp";
-import { Flex, Icon, Image, Box, Text, Button } from "@chakra-ui/react";
+import { Flex, Icon, Image, Box, Text, Button, AspectRatio } from "@chakra-ui/react";
 import {
   doc,
   getDoc,
@@ -98,9 +98,11 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({
   return (
     <Flex width="100%" height="94vh" position="relative">
       {userData?.photoURL ? (
-        <Image width="100%" height="100%" src={`${userData.photoURL}`} />
+        <AspectRatio width='100%' ratio={1}>
+          <Image src={`${userData.photoURL}`} alt="User Profile" />
+        </AspectRatio>
       ) : (
-        <Icon fontSize={40} mr={1} color="brand.100" as={AiOutlineUser} />
+        <Icon fontSize={40} mr={{base:0,md:1}} color="brand.100" as={AiOutlineUser} />
       )}
       {/* The box with black shadow background */}
       <Box

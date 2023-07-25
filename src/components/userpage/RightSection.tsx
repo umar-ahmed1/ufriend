@@ -28,9 +28,9 @@ const RightSection: React.FC<RightSectionProps> = ({
         align="center"
         justify="center"
       >
-        <Button mr={{ base: 1, md: 3 }}>Events</Button>
-        <Button mr={{ base: 1, md: 3 }}>Tutors</Button>
-        <Button onClick={() => router.push("/about")}>Classes</Button>
+        <Button mr={{ base: 0, md: 3 }} fontSize={{base:14,md:18}}>Events</Button>
+        <Button mr={{ base: 0, md: 3 }} fontSize={{base:14,md:18}}>Tutors</Button>
+        <Button onClick={() => router.push("/about")} fontSize={{base:14,md:18}}>Classes</Button>
       </Flex>
       {selectedCategory == "Messages" && <UserShowcase userData={messagingStateValue.currentFriend} type={'right'} setSelectedCategory={setSelectedCategory}/>}
     </Flex>
