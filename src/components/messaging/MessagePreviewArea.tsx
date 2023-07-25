@@ -26,12 +26,12 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
       direction="column"
       borderRight="1px solid grey"
     >
-      <Flex pl={4} justify="flex-start" align="center" mt={4} width="40%">
+      <Flex pl={{base:0,md:4}} justify="flex-start" align="center" mt={{base:2,md:4}} width="40%">
         <Text
           fontWeight={700}
-          fontSize={20}
+          fontSize={{base:14,md:20}}
           color="brand.100"
-          mr={4}
+          mr={{base:2,md:4}}
           _hover={{ cursor: "pointer", textDecoration: "underline" }}
           textDecoration={selectedCategory == "Messages" ? "underline" : "none"}
         >
@@ -39,7 +39,7 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
         </Text>
         <Text
           fontWeight={700}
-          fontSize={20}
+          fontSize={{base:14,md:20}}
           color="brand.100"
           _hover={{ cursor: "pointer", textDecoration: "underline" }}
           textDecoration={selectedCategory == "FOTD" ? "underline" : "none"}
@@ -49,7 +49,7 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
         </Text>
       </Flex>
 
-      <Stack mt={4} pl={4} pr={4} spacing={5} width="100%">
+      <Stack mt={{base:2,md:4}} pl={{base:2,md:4}} pr={{base:2,md:4}} spacing={5} width="100%">
         {messagingStateValue.myFriends.map((friendData, index) => (
           <MessagePreviewItem
             key={index}

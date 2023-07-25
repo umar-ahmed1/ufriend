@@ -50,7 +50,7 @@ const MiddleSection:React.FC<MiddleSectionProps> = ({userData,selectedCategory,s
   return (
     <Flex direction='column' width='100%'>
       <Flex width="100%" height="6vh" align='center' justify='center' borderBottom='1px solid grey' borderRight='1px solid grey'>
-        <Text color='brand.100' fontSize={40}>{selectedCategory == 'FOTD' ? 'Friend of the Day' : 'Messenger'}</Text>
+        <Text color='brand.100' fontSize={{base:20,sm:28,md:40}} fontWeight={700}>{selectedCategory == 'FOTD' ? 'Friend of the Day' : 'Messenger'}</Text>
       </Flex>
       {selectedCategory=='FOTD' && <UserShowcase userData={fotd} type={'middle'} setSelectedCategory={setSelectedCategory} />}
       {selectedCategory=='Messages' && <MessageBox userData={userData}/>}

@@ -25,23 +25,23 @@ const LeftSection: React.FC<LeftSectionProps> = ({userData,selectedCategory,setS
         width="100%"
         height="6vh"
         align="center"
-        pl={3}
-        pr={3}
-        justify="space-between"
+        pl={{base:1,md:3}}
+        pr={{base:1,md:3}}
+        justify={{base:'center',sm:'space-between'}}
         borderRight='1px solid grey'
       >
         <Flex align="center">
           {userData?.photoURL ? (
             <Image
-              width="40px"
-              height="40px"
+              width={{base:'25px',md:'40px'}}
+              height={{base:'25px',md:'40px'}}
               borderRadius="full"
-              mr={1}
+              mr={{base:0,md:1}}
               color="gray.300"
               src={`${userData.photoURL}`}
             />
           ) : (
-            <Icon fontSize={40} mr={1} color="brand.100" as={AiOutlineUser} />
+            <Icon fontSize={{base:20,md:40}} mr={1} color="brand.100" as={AiOutlineUser} />
           )}
           <Flex
             direction="column"
@@ -62,7 +62,7 @@ const LeftSection: React.FC<LeftSectionProps> = ({userData,selectedCategory,setS
           </Flex>
         </Flex>
         <Flex align="center">
-          <Icon mr={2} fontSize={35} as={CiSettings}></Icon>
+          <Icon mr={{base:0,md:2}} fontSize={{base:25,md:35}} as={CiSettings}></Icon>
           <UserMenu user={user} userData={userData}/>
         </Flex>
       </Flex>

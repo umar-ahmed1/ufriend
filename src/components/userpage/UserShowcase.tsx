@@ -97,19 +97,21 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({ userData, type,setSelectedC
       >
         <Flex width="100%" align="center">
           <Flex width="100%" direction="column">
-            <Text fontSize={35} fontWeight={700} color="brand.100">
+            <Text fontSize={{base:20,sm:25,md:35}} fontWeight={700} color="brand.100">
               {userData && userData.displayName}
             </Text>
-            <Text fontSize={25}>{`${userData && userData.major}, ${
+            <Text fontSize={{base:15,sm:20,md:25}}>{`${userData && userData.major}, ${
               userData && userData.yearOfProgram
             }rd year`}</Text>
-            <Text fontSize={18}>{userData && userData.bio}</Text>
+            <Text fontSize={{base:12,sm:15,md:18}}>{userData && userData.bio}</Text>
           </Flex>
           <Flex height="100%">
             {type == 'middle' && <Button
               backgroundColor="brand.100"
               _hover={{ cursor: "pointer", opacity: "0.9" }}
-              height="50px"
+              height={{base:'30px',md:'50px'}}
+              width={{base:'75%',md:'100%'}}
+              fontSize={{base:12,md:18}}
               isLoading={loading}
               onClick = {handleMessageFOTD}
             >
