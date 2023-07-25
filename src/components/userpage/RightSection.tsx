@@ -6,7 +6,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import UserShowcase from "./UserShowcase";
 import { messagingState } from "../atoms/messagingAtom";
 import { useRecoilState } from "recoil";
-import RightButtonMenu from "./rightButtonMenu";
+import RightButtonMenu from "./RightButtonMenu";
 
 type RightSectionProps = {
   userData?: UserData;

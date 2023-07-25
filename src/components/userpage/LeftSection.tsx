@@ -25,30 +25,30 @@ const LeftSection: React.FC<LeftSectionProps> = ({userData,selectedCategory,setS
         width="100%"
         height="6vh"
         align="center"
-        pl={{base:1,md:3}}
-        pr={{base:1,md:3}}
+        pl={{base:0,sm:3}}
+        pr={{base:0,sm:3}}
         justify={{base:'center',sm:'space-between'}}
         borderRight='1px solid grey'
       >
         <Flex align="center">
           {userData?.photoURL ? (
             <Image
-              width={{base:'25px',md:'40px'}}
-              height={{base:'25px',md:'40px'}}
+              width={{base:'30px',md:'40px'}}
+              height={{base:'30px',md:'40px'}}
               borderRadius="full"
               mr={{base:0,md:1}}
               color="gray.300"
               src={`${userData.photoURL}`}
             />
           ) : (
-            <Icon fontSize={{base:20,md:40}} mr={1} color="brand.100" as={AiOutlineUser} />
+            <Icon fontSize={{base:25,md:40}} mr={1} color="brand.100" as={AiOutlineUser} />
           )}
           <Flex
             direction="column"
             display={{ base: "none", lg: "flex" }}
             fontSize="8pt"
             align="flex-start"
-            ml={1}
+            ml={{base:0,sm:1}}
           >
             <Text fontWeight={700} fontSize={12}>
               {(userData && userData.displayName) || user!.email?.split("@")[0]}
@@ -62,7 +62,7 @@ const LeftSection: React.FC<LeftSectionProps> = ({userData,selectedCategory,setS
           </Flex>
         </Flex>
         <Flex align="center">
-          <Icon mr={{base:0,md:2}} fontSize={{base:25,md:35}} as={CiSettings}></Icon>
+          <Icon mr={{base:0,md:2}} fontSize={{base:30,sm:35}} as={CiSettings}></Icon>
           <UserMenu user={user} userData={userData}/>
         </Flex>
       </Flex>

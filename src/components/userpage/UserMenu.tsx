@@ -48,7 +48,7 @@ const UserMenu: React.FC<UserMenuProps> = ({user,userData}) => {
       >
         <Flex align="center">
           <Flex align="center">
-            <Icon as={AiOutlineMenu} fontSize={{base:20,md:30}} />
+            <Icon as={AiOutlineMenu} fontSize={{base:20,sm:30}} />
           </Flex>
           <ChevronDownIcon />
         </Flex>

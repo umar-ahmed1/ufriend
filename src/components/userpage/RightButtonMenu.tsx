@@ -44,7 +44,7 @@ const RightButtonMenu: React.FC<RightButtonMenuProps> = ({user,userData}) => {
       >
         <Flex align="center">
           <Flex align="center">
-            <Icon as={AiOutlineMenu} fontSize={{base:20,sm:30}} />
+            <Icon as={AiOutlineMenu} fontSize={{base:30,sm:40}} />
           </Flex>
           <ChevronDownIcon />
         </Flex>
