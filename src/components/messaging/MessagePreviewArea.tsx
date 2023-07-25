@@ -26,10 +26,10 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
       direction="column"
       borderRight="1px solid grey"
     >
-      <Flex pl={{base:0,md:4}} justify="flex-start" align="center" mt={{base:2,md:4}} width="40%">
+      <Flex pl={{base:2,md:4}} justify={{base:'center',sm:"flex-start"}} align="center" mt={{base:2,md:4}} width={{base:'100%',md:"40%"}} direction={{base:'column',sm:'row'}}>
         <Text
           fontWeight={700}
-          fontSize={{base:14,md:20}}
+          fontSize={{base:15,md:20}}
           color="brand.100"
           mr={{base:2,md:4}}
           _hover={{ cursor: "pointer", textDecoration: "underline" }}
@@ -39,7 +39,7 @@ const MessagePreviewArea: React.FC<MessagePreviewAreaProps> = ({
         </Text>
         <Text
           fontWeight={700}
-          fontSize={{base:14,md:20}}
+          fontSize={{base:15,md:20}}
           color="brand.100"
           _hover={{ cursor: "pointer", textDecoration: "underline" }}
           textDecoration={selectedCategory == "FOTD" ? "underline" : "none"}
