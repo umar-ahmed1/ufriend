@@ -11,6 +11,7 @@ import {
   limit,
   orderBy,
   query,
+  Timestamp,
   where,
 } from "firebase/firestore";
 import React from "react";
@@ -57,6 +58,8 @@ export interface UserData {
   university: string;
   yearOfProgram: string;
   latestMessage?:string;
+  lastFotdTime: Timestamp,
+  lastFotdId: string
 }
 
 type pageProps = {
@@ -139,10 +142,6 @@ const page: React.FC<pageProps> = ({user}) => {
     }));
   };
   
-  React.useEffect(() => {
-    console.log(messagingStateValue)
-  },[])
-
   return (
     <>
       <PageContent>
