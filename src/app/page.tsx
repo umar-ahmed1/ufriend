@@ -25,13 +25,14 @@ export default function Home() {
             height="10vh"
             align="center"
             justify="space-between"
+            bgColor='brand.300'
             pl={{ base: 1, sm: 5 }}
             pr={{ base: 1, sm: 5 }}
           >
             <Flex height="100%" align="center">
               <Image
-                src="/images/logo.png"
-                height={{ base: "50%", sm: "65%" }}
+                src="/images/logo22.png"
+                height={{ base: "60%", sm: "75%" }}
               ></Image>
             </Flex>
             <Stack
@@ -42,37 +43,37 @@ export default function Home() {
               spacing={10}
             >
               <Text
-                color="brand.100"
-                fontSize={{ base: 15,sm:20, md: 25 }}
-                _hover={{textDecoration:'underline',cursor:'pointer'}}
+                color="brand.500"
+                fontSize={{ base: 15, sm: 20, md: 25 }}
+                _hover={{ textDecoration: "underline", cursor: "pointer" }}
               >
                 FRIENDS
               </Text>
               <Text
-                color="brand.100"
-                fontSize={{ base: 15,sm:20, md: 25 }}
-                _hover={{textDecoration:'underline',cursor:'pointer'}}
+                color="brand.500"
+                fontSize={{ base: 15, sm: 20, md: 25 }}
+                _hover={{ textDecoration: "underline", cursor: "pointer" }}
               >
                 EVENTS
               </Text>
               <Text
-                color="brand.100"
-                fontSize={{ base: 15,sm:20, md: 25 }}
-                _hover={{textDecoration:'underline',cursor:'pointer'}}
+                color="brand.500"
+                fontSize={{ base: 15, sm: 20, md: 25 }}
+                _hover={{ textDecoration: "underline", cursor: "pointer" }}
               >
                 TUTORS
               </Text>
               <Text
-                color="brand.100"
-                fontSize={{ base: 15,sm:20, md: 25 }}
-                _hover={{textDecoration:'underline',cursor:'pointer'}}
+                color="brand.500"
+                fontSize={{ base: 15, sm: 20, md: 25 }}
+                _hover={{ textDecoration: "underline", cursor: "pointer" }}
               >
                 CLASSES
               </Text>
               <Text
-                color="brand.100"
-                fontSize={{ base: 15,sm:20, md: 25 }}
-                _hover={{textDecoration:'underline',cursor:'pointer'}}
+                color="brand.500"
+                fontSize={{ base: 15, sm: 20, md: 25 }}
+                _hover={{ textDecoration: "underline", cursor: "pointer" }}
               >
                 ABOUT
               </Text>
@@ -88,11 +89,16 @@ export default function Home() {
             </Flex>
             <Flex>
               <Button
-                border='2px solid'
-                borderColor='brand.100'
-                color='brand.100'
-                backgroundColor='white'
-                _hover={{cursor:'pointer',backgroundColor:'brand.100',color:'black'}}
+                border="2px solid"
+                borderColor="brand.500"
+                color="black"
+                borderRadius='full'
+                backgroundColor="white"
+                _hover={{
+                  cursor: "pointer",
+                  backgroundColor: "brand.500",
+                  color: "white",
+                }}
                 onClick={() =>
                   setModalState({
                     open: true,
@@ -104,52 +110,24 @@ export default function Home() {
               </Button>
             </Flex>
           </Flex>
-
-          <Flex
-            width="100%"
-            border="1px solid grey"
-            height="90vh"
-            opacity="0.8"
-            bgImage="/images/people.png"
-            bgRepeat="no-repeat"
-            align="center"
-            bgSize="cover"
-            justify="center"
-            position="relative"
-          >
-            <Box
-              position="absolute"
-              top={0}
-              bottom={0}
-              left={0}
-              right={0}
-              bg="rgba(0, 0, 0, 0.2)"
-            />
-            <Flex
-              zIndex="1"
-              width={{ base: "100%", md: "33%" }}
-              height="30%"
-              bgColor="white"
-              opacity="0.96"
-              align="center"
-              direction="column"
-            >
+          <Flex height="90vh" width="100%" direction={{base:'column',sm:'row'}}>
+            <Flex bgColor="brand.300" width={{base:"100%",sm:'60%',md:"50%"}} height="100%" position='relative' zIndex="1">
               <Stack
                 width="100%"
                 align="center"
-                mt={5}
+                position='absolute'
+                top="15%"
                 spacing={6}
-                bgColor="white"
                 pb={5}
                 pl={{ sm: 5, md: 1 }}
                 pr={{ sm: 5, md: 1 }}
               >
-                <Text color="black" fontSize="24px" fontWeight={700}>
-                  Make New Friends
+                <Text color="brand.500" fontSize={{base:'30px',sm:'50px',md:'60px',lg:'70px'}} fontWeight={700} textAlign='center'>
+                  A Simple Way to Make New Friends
                 </Text>
                 <Text
-                  color="gray.600"
-                  fontSize="20px"
+                  color="brand.500"
+                  fontSize={{base:'15px',sm:'20px',md:'25px',lg:'30px'}}
                   textAlign="center"
                   fontWeight={500}
                 >
@@ -158,19 +136,15 @@ export default function Home() {
                 </Text>
                 <Flex width="100%" justify="center">
                   <Button
-                    mr={2}
-                    onClick={() =>
-                      setModalState({
-                        open: true,
-                        view: "login",
-                      })
-                    }
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    bgColor="brand.100"
-                    _hover={{ bgColor: "brand.100", opacity: "0.9" }}
+                    width={{base:'40%',sm:'30%',md:'20%'}}
+                    height='50px'
+                    bgColor="white"
+                    borderRadius='full'
+                    border='2px solid'
+                    p={2}
+                    fontSize={{base:'15px',sm:'20px'}}
+                    borderColor='brand.500'
+                    _hover={{ bgColor: "brand.500", opacity: "0.9",color:'white'}}
                     onClick={() =>
                       setModalState({
                         open: true,
@@ -183,6 +157,17 @@ export default function Home() {
                 </Flex>
               </Stack>
             </Flex>
+            <Flex
+              width={{base:"100%",sm:"40%",md:'50%'}}
+              height="100%"
+              opacity="1"
+              bgImage="/images/aipeople4.png"
+              bgRepeat="no-repeat"
+              align="center"
+              bgSize="cover"
+              justify="center"
+              position="relative"
+            ></Flex>
           </Flex>
         </>
       ) : (
