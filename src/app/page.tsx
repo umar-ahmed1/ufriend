@@ -31,8 +31,8 @@ export default function Home() {
           >
             <Flex height="100%" align="center">
               <Image
-                src="/images/logo22.png"
-                height={{ base: "60%", sm: "75%" }}
+                src="/images/logo33.png"
+                height={{ base: "40%",sm:'50%', md: "65%" }}
               ></Image>
             </Flex>
             <Stack
