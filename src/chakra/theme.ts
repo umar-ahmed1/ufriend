@@ -7,7 +7,7 @@ export const theme = extendTheme({
     brand: {
       100: "#FF8264",
       200: "#FC863F",
-      300: "#f58d4d",
+      300: "#FDAE7E",
       400: "#145365",
       500: "#083A48",
       700: "#71767B",

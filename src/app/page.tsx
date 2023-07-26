@@ -161,7 +161,8 @@ export default function Home() {
               width={{base:"100%",sm:"40%",md:'50%'}}
               height="100%"
               opacity="1"
-              bgImage="/images/aipeople4.png"
+              bgImage="/images/aipeople44.png"
+              bgColor='brand.300'
               bgRepeat="no-repeat"
               align="center"
               bgSize="cover"
