@@ -1,7 +1,5 @@
 "use client";
-import { UserDetails } from "@/components/loginsignup/CreateAccount/CreateAccount";
 import { auth, firestore } from "@/firebase/clientApp";
-import { Button, Flex, Icon, Text, Image } from "@chakra-ui/react";
 import { signOut, User } from "firebase/auth";
 import {
   collection,
@@ -15,18 +13,11 @@ import {
   where,
 } from "firebase/firestore";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import PageContent from "../pagelayout/PageContent";
 import { useRouter } from "next/navigation";
-import { CiSettings } from "react-icons/ci";
-import UserMenu from "./UserMenu";
-import MessageBox from "../messaging/MessagePreviewArea";
-import LeftSection from "./LeftSection";
-import MiddleSection from "./MiddleSection";
-import RightSection from "./RightSection";
+import MessagesSection from "../messaging/MessagesSection";
 import { messagingState } from "../atoms/messagingAtom";
 import { useRecoilState } from "recoil";
-import Navbar from "../navbar/Navbar";
+import FotdSection from "../fotd/FotdSection";
 
 export interface UserData {
   apiKey: string;
@@ -149,33 +140,21 @@ const page: React.FC<pageProps> = ({ user }) => {
 
   return (
     <>
-      <Flex width="100%" justify="center">
-        <Navbar
+      {selectedCategory == "Messages" && (
+        <MessagesSection
+          userData={userData}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        <Flex direction="column" width={{ base: "25%" }}>
-          <LeftSection
-            userData={userData}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-        </Flex>
-        <Flex direction="column" width={{ base: "50%", md: "50%" }}>
-          <MiddleSection
-            userData={userData}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-        </Flex>
-        <Flex direction="column" width={{ base: "25%" }}>
-          <RightSection
-            userData={userData}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-        </Flex>
-      </Flex>
+      )}
+        {selectedCategory == "FOTD" && (
+        <FotdSection
+          userData={userData}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      )}
+      
     </>
   );
 };

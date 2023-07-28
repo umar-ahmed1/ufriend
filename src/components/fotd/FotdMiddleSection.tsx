@@ -1,8 +1,16 @@
-import { Flex, Text, Image, Icon, Box, AspectRatio, Stack } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Image,
+  Icon,
+  Box,
+  AspectRatio,
+  Stack,
+} from "@chakra-ui/react";
 import React from "react";
-import { UserData } from "./UserHome";
-import { AiOutlineUser,AiFillPhone } from "react-icons/ai";
-import UserShowcase from "./UserShowcase";
+import { UserData } from "../userpage/UserHome";
+import { AiOutlineUser, AiFillPhone } from "react-icons/ai";
+import UserShowcase from "../userpage/UserShowcase";
 import MessageBox from "../messaging/MessageBox";
 import {
   collection,
@@ -17,15 +25,15 @@ import { auth, firestore } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { messagingState } from "../atoms/messagingAtom";
-import {HiOutlineDotsCircleHorizontal} from 'react-icons/hi'
+import { HiOutlineDotsCircleHorizontal } from "react-icons/hi";
 
-type MiddleSectionProps = {
+type FotdMiddleSectionProps = {
   userData?: UserData;
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const MiddleSection: React.FC<MiddleSectionProps> = ({
+const MiddleSection: React.FC<FotdMiddleSectionProps> = ({
   userData,
   selectedCategory,
   setSelectedCategory,
@@ -129,71 +137,19 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
         borderRight="1px solid"
         borderColor="gray.200"
       >
-        {selectedCategory == "FOTD" && (
-          <Text
-            color="brand.100"
-            fontSize={{ base: 20, sm: 28, md: 40 }}
-            fontWeight={700}
-          >
-            Friend of the Day
-          </Text>
-        )}
-        {selectedCategory == "Messages" && (
-          <Flex width="100%" height="100%" justify='space-between' align='center' ml={{ base: 1, sm: 5, md: 8 }} mr={{ base: 1, sm: 5, md: 8 }}>
-            <Flex align="center">
-              {messagingStateValue.currentFriend?.photoURL ? (
-                <AspectRatio
-                  ratio={1}
-                  width={{ base: "40px", md: "60px" }}
-                  height={{ base: "40px", md: "60px" }}
-                  mr={{ base: 0, md: 1 }}
-                >
-                  <Image
-                    borderRadius="full"
-                    src={`${messagingStateValue.currentFriend.photoURL}`}
-                  />
-                </AspectRatio>
-              ) : (
-                <Icon
-                  fontSize={{ base: 35, md: 60 }}
-                  mr={1}
-                  color="brand.100"
-                  as={AiOutlineUser}
-                />
-              )}
-              <Flex
-                direction="column"
-                display={{ base: "none", lg: "flex" }}
-                align="flex-start"
-                ml={{ base: 0, sm: 1,md:3 }}
-              >
-                <Text fontWeight={700} color='brand.400' fontSize={{base:15,md:25}}>
-                  {(messagingStateValue.currentFriend &&
-                    (messagingStateValue.currentFriend.displayName) ||
-                    messagingStateValue.currentFriend?.email?.split("@")[0])}
-                </Text>
-                <Flex align="center">
-                  <Text fontSize={{base:12,md:15}} color="gray.400">
-                    Online
-                  </Text>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Stack direction='row'>
-              <Icon as={HiOutlineDotsCircleHorizontal} fontSize={{base:25,md:40}} color='brand.400'/>
-              <Icon as={AiFillPhone} fontSize={{base:25,md:40}} color='brand.400'/>
-            </Stack>
-          </Flex>
-        )}
+        <Text
+          color="brand.100"
+          fontSize={{ base: 20, sm: 28, md: 40 }}
+          fontWeight={700}
+        >
+          Friend of the Day
+        </Text>
       </Flex>
-      {selectedCategory == "FOTD" && (
-        <UserShowcase
-          userData={fotd}
-          type={"middle"}
-          setSelectedCategory={setSelectedCategory}
-        />
-      )}
-      {selectedCategory == "Messages" && <MessageBox userData={userData} />}
+      <UserShowcase
+        userData={fotd}
+        type={"middle"}
+        setSelectedCategory={setSelectedCategory}
+      />
     </Flex>
   );
 };

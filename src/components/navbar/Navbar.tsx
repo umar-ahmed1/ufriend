@@ -89,6 +89,7 @@ const Navbar: React.FC<NavbarProps> = ({selectedCategory,setSelectedCategory}) =
           p="12px"
           _hover={{ bg: "blackAlpha.200" }}
           borderRadius="full"
+          bgColor={selectedCategory == 'FOTD' ? 'blackAlpha.200' : 'white'}
           onClick={() => setSelectedCategory('FOTD')}
         >
           <Icon color="brand.400" fontSize={28} as={BsFillPeopleFill} mr={2} />
@@ -104,6 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({selectedCategory,setSelectedCategory}) =
           _hover={{ bg: "blackAlpha.200" }}
           p="12px"
           borderRadius="full"
+          bgColor={selectedCategory == 'Messages' ? 'blackAlpha.200' : 'white'}
           onClick={() => setSelectedCategory('Messages')}
         >
           <Icon color="brand.400" fontSize={28} as={AiOutlineMail} mr={2} />
