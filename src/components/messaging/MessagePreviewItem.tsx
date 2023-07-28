@@ -61,7 +61,7 @@ const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({
       )}
       <Flex
         direction="column"
-        maxWidth="100%"
+        maxWidth='70%'
         display={{ base: "none", lg: "flex" }}
         align="flex-start"
         pl={3}

@@ -23,8 +23,8 @@ const Message: React.FC<MessageProps> = ({
 
 
   const getDisplayTime = () => {
-    if(!timeSent){
-      return
+    if (!timeSent || typeof timeSent.toDate !== "function") {
+      return;
     }
     const messageDate = timeSent.toDate()
     const currentDate = new Date()
