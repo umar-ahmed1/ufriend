@@ -29,26 +29,6 @@ const RightSection: React.FC<RightSectionProps> = ({
         height="10vh"
         align="center"
         justify="center"
-        display={{ base: "none", md: "flex" }}
-      >
-        <Button mr={{ base: 0, md: 3 }} fontSize={{ base: 14, md: 18 }}>
-          Events
-        </Button>
-        <Button mr={{ base: 0, md: 3 }} fontSize={{ base: 14, md: 18 }}>
-          Tutors
-        </Button>
-        <Button
-          onClick={() => router.push("/about")}
-          fontSize={{ base: 14, md: 18 }}
-        >
-          Classes
-        </Button>
-      </Flex>
-      <Flex
-        width="100%"
-        height="6vh"
-        align="center"
-        justify="center"
         display={{ base: "flex", md: "none" }}
       >
         <RightButtonMenu/>
