@@ -47,6 +47,7 @@ const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({
       pt={1}
       pb={1}
       onClick={handleClick}
+      bgColor={messagingStateValue.currentFriend?.uid == userData?.uid ? 'gray.100' : 'white' }
     >
       {userData?.photoURL ? (
         <Image

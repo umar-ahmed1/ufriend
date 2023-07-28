@@ -1,19 +1,89 @@
-import { Flex, Text } from '@chakra-ui/react';
-import React from 'react';
+import { Flex, Stack, Text } from "@chakra-ui/react";
+import { Timestamp } from "firebase/firestore";
+import React from "react";
+import moment from "moment";
 
 type MessageProps = {
-  sender:string
-  contents:string
+  sender: string;
+  contents: string;
+  senderName: string;
+  timeSent: Timestamp;
 };
 
-const Message:React.FC<MessageProps> = ({sender,contents}) => {
+
+
+const Message: React.FC<MessageProps> = ({
+  sender,
+  contents,
+  senderName,
+  timeSent,
+}) => {
+
+  const [messageTime,setMessageTime] = React.useState<string>("a few seconds ago")
+
+
+  const getDisplayTime = () => {
+    if(!timeSent){
+      return
+    }
+    const messageDate = timeSent.toDate()
+    const currentDate = new Date()
+    const timeDiff = currentDate.getTime() - messageDate.getTime()
+    if (timeDiff > 86400000){
+      setMessageTime(moment(new Date(timeSent.seconds * 1000)).fromNow())
+    } else {
+      setMessageTime(new Date(timeSent.seconds * 1000).toLocaleString([], {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      }))
+    }
+
+  }
     
-    return (
-        <Flex width='100%' justify={sender == 'me' ? 'flex-end' : 'flex-start'} pl={{base:2,md:4}} pr={{base:2,md:4}} align='center' mb={2}>
-            <Flex backgroundColor={sender == 'me' ? 'blue.400' : 'gray.400'} pl={{base:2,md:4}} pr={{base:2,md:4}} borderRadius='full' maxWidth={{base:'90%',sm:'80%',md:'60%'}} align='center' justify='center' pt={2} pb={2}>
-                <Text color='white' textAlign='center'>{contents}</Text>
-            </Flex>
+  React.useEffect(() => {
+    getDisplayTime()
+  },[])
+
+  return (
+    <Flex
+      width="100%"
+      justify={sender === "me" ? "flex-end" : "flex-start"}
+      pl={{ base: 2, md: 4 }}
+      pr={{ base: 2, md: 4 }}
+      align={sender === "me" ? "flex-end" : "flex-start"}
+      mb={5}
+    >
+      <Flex direction="column" maxWidth={{ base: "90%", sm: "80%", md: "60%" }}>
+        <Flex
+          backgroundColor={sender === "me" ? "blue.400" : "gray.400"}
+          pl={{ base: 2, md: 4 }}
+          pr={{ base: 2, md: 4 }}
+          borderRadius="xl"
+          width="100%"
+          align="center"
+          justify="flex-start"
+          pt={1}
+          pb={1}
+        >
+          <Text color="white">{contents}</Text>
         </Flex>
-    )
-}
+        <Flex justify="flex-start" align="center" width="100%" mt={1} ml={2}>
+          {sender == "you" && (
+            <Text fontSize={12} fontWeight={700} color={"gray.500"}>
+              {senderName}
+            </Text>
+          )}
+          <Text
+            fontSize={12}
+            ml={sender == "you" ? 1 : 0}
+            color={sender === "me" ? "blue.500" : "gray.500"}
+          >
+            {messageTime}
+          </Text>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+};
 export default Message;

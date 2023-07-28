@@ -136,6 +136,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
               key={index}
               contents={message.contents}
               sender={message.sentBy == user!.uid ? "me" : "you"}
+              senderName = {messagingStateValue.currentFriend!.displayName}
+              timeSent = {message.createdAt}
             />
           ))}
         </Flex>
