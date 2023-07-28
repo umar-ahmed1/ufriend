@@ -1,9 +1,9 @@
-import { Flex, Stack, Icon, Text, Button, Image } from "@chakra-ui/react";
+import { Flex, Stack, Icon, Text, Button, Image, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import {BiLogOut } from "react-icons/bi";
 import { AiOutlineMail, AiOutlineUser } from "react-icons/ai";
 import { BsBookmark, BsPerson, BsThreeDots,BsFillPeopleFill,BsFillCalendarEventFill } from "react-icons/bs";
-import { auth } from "@/firebase/clientApp";
+import { auth, firestore } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import UserMenu from "../userpage/UserMenu";
 import { useRecoilState } from "recoil";
@@ -13,15 +13,38 @@ import {IoMdSchool} from 'react-icons/io'
 import { UserData } from "../userpage/UserHome";
 import {CiSettings} from 'react-icons/ci'
 import { signOut } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 type NavbarProps = {
-    userData?: UserData
 };
 
-const Navbar: React.FC<NavbarProps> = ({userData}) => {
+const Navbar: React.FC<NavbarProps> = () => {
   const [user] = useAuthState(auth);
   const [modalState, setModalState] = useRecoilState(authModalState);
   const router = useRouter();
+
+  //the children are the LHS and RHS react fragments
+  const [loading, setLoading] = React.useState(true);
+  const [userData, setUserData] = React.useState<UserData>();
+  //function to get all the user details from firestore
+  const getUserDetails = async () => {
+    setLoading(true);
+    try {
+      const userDocRef = doc(firestore, "users", user!.uid);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        const userInfo = { id: userDoc.id, ...userDoc.data() };
+        setUserData(userInfo as UserData);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  React.useEffect(() => {
+    getUserDetails()
+  },[])
 
   const logout = async () => {
     await signOut(auth);
@@ -37,7 +60,6 @@ const Navbar: React.FC<NavbarProps> = ({userData}) => {
       borderRight="1px solid"
       borderColor="gray.200"
       position='relative'
-      borderBottom='1px solid red'
       direction='column'
     >
       <Stack
@@ -47,13 +69,14 @@ const Navbar: React.FC<NavbarProps> = ({userData}) => {
         pb={3}
         pr={{ base: 0, lg: 6 }}
         mr={{ base: 0, lg: 6 }}
+        mt={{base:2,md:4}}
       >
         <Flex
           align="center"
           cursor="pointer"
           width="100%"
           p="12px"
-          _hover={{ bg: "whiteAlpha.200" }}
+          _hover={{ bg: "blackAlpha.200" }}
           borderRadius="full"
         >
           <Image src="/images/logo33.png" width="50%" />
@@ -178,9 +201,11 @@ const Navbar: React.FC<NavbarProps> = ({userData}) => {
             </Flex>
           </Flex>
         </Flex>
+        <Tooltip label="logout" aria-label="logout" hasArrow>
         <Flex align="center" _hover={{cursor:'pointer'}} onClick={logout}>
           <Icon fontSize={{base:30,sm:35}} as={BiLogOut}></Icon>
         </Flex>
+        </Tooltip>
       </Flex>
     </Flex>
   );

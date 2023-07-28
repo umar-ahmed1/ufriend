@@ -117,14 +117,14 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   return (
     <Flex
       width="100%"
-      height="94vh"
+      height="90vh"
       direction="column"
       position="relative"
       overflow="hidden"
     >
       <Box
         height='100%'
-        maxHeight="calc(94vh - 100px)"
+        maxHeight="calc(90vh - 100px)"
         overflow="auto"
         px={4} 
         ref={messagesContainerRef}

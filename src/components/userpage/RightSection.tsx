@@ -26,7 +26,7 @@ const RightSection: React.FC<RightSectionProps> = ({
     <Flex direction="column" width="100%">
       <Flex
         width="100%"
-        height="6vh"
+        height="10vh"
         align="center"
         justify="center"
         display={{ base: "none", md: "flex" }}

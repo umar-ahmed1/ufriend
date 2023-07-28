@@ -1,5 +1,5 @@
 import { auth } from "@/firebase/clientApp";
-import { Flex, Icon, Image, Text } from "@chakra-ui/react";
+import { AspectRatio, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AiOutlineUser } from "react-icons/ai";
@@ -20,18 +20,17 @@ const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({
   setSelectedCategory,
   contents,
 }) => {
-  
   const [user] = useAuthState(auth);
-  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
+  const [messagingStateValue, setMessagingStateValue] =
+    useRecoilState(messagingState);
 
   const handleClick = () => {
-    setSelectedCategory("Messages")
+    setSelectedCategory("Messages");
     setMessagingStateValue((prev) => ({
       ...prev,
-      currentFriend: userData
-    }))
-  }
-
+      currentFriend: userData,
+    }));
+  };
 
   return (
     <Flex
@@ -43,37 +42,35 @@ const MessagePreviewItem: React.FC<MessagePreviewItemProps> = ({
         outline: "1px solid",
         outlineColor: "grey.200",
       }}
-      borderRadius="full"
-      pt={1}
-      pb={1}
+      borderRadius="xl"
+      pt={2}
+      pb={2}
       onClick={handleClick}
-      bgColor={messagingStateValue.currentFriend?.uid == userData?.uid ? 'gray.100' : 'white' }
+      bgColor={
+        messagingStateValue.currentFriend?.uid == userData?.uid
+          ? "gray.100"
+          : "white"
+      }
     >
       {userData?.photoURL ? (
-        <Image
-          width="50px"
-          height="50px"
-          borderRadius="full"
-          pr={1}
-          color="gray.300"
-          src={`${userData.photoURL}`}
-        />
+        <AspectRatio ratio={1} width="50px" height="50px" pr={1} ml={2}>
+          <Image borderRadius="full" src={`${userData.photoURL}`} />
+        </AspectRatio>
       ) : (
-        <Icon fontSize={50} mr={1} color="brand.100" as={AiOutlineUser} />
+        <Icon fontSize={50} mr={1} color="brand.300" as={AiOutlineUser} />
       )}
       <Flex
         direction="column"
         maxWidth="100%"
         display={{ base: "none", lg: "flex" }}
-        fontSize="8pt"
         align="flex-start"
-        pl={1}
+        pl={3}
       >
-        <Text fontWeight={700} fontSize={14}>
+        <Text fontWeight={700} fontSize={17} color="brand.400">
           {(userData && userData.displayName) || user!.email?.split("@")[0]}
         </Text>
         <Flex align="center" width="100%">
-          <Text fontSize={13} color="gray.400" noOfLines={1} maxWidth="100%">
+          <Text fontSize={14} color="gray.400" noOfLines={1} maxWidth="100%">
             {contents}
           </Text>
         </Flex>
