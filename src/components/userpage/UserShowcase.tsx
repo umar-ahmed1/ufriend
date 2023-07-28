@@ -96,7 +96,7 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({
   };
 
   return (
-    <Flex width="100%" height={type=='mid' ? '90vh' : '100vh'} position="relative">
+    <Flex width="100%" height={type=='middle' ? '90vh' : '100vh'} position="relative">
       {userData?.photoURL ? (
         <AspectRatio width='100%' height='100%' ratio={16/9}>
           <Image src={`${userData.photoURL}`} alt="User Profile" />

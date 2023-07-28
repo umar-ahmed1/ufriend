@@ -96,13 +96,16 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   };
 
   React.useEffect(() => {
-    getMessages();
+    if (messagingStateValue.currentFriend){
+      getMessages();
+    } else{
+      setMessagingStateValue((prev) => ({
+        ...prev,
+        currentFriend: messagingStateValue.myFriends[0]
+      }));
+    }
+
   }, [messagingStateValue.currentFriend]);
-
-  React.useEffect(() => {
-    console.log("SEndmessage", messagingStateValue);
-  }, [messagingStateValue]);
-
 
   // Create a ref for the inner container (Box)
   const messagesContainerRef = React.useRef<HTMLDivElement>(null);

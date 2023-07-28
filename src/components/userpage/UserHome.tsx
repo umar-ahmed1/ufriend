@@ -17,11 +17,8 @@ import {
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PageContent from "../pagelayout/PageContent";
-import { AiOutlineUser, AiOutlineMenu} from "react-icons/ai";
-import { VscAccount } from "react-icons/vsc";
-import { IoSparkles } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import {CiSettings} from 'react-icons/ci'
+import { CiSettings } from "react-icons/ci";
 import UserMenu from "./UserMenu";
 import MessageBox from "../messaging/MessagePreviewArea";
 import LeftSection from "./LeftSection";
@@ -29,7 +26,7 @@ import MiddleSection from "./MiddleSection";
 import RightSection from "./RightSection";
 import { messagingState } from "../atoms/messagingAtom";
 import { useRecoilState } from "recoil";
-
+import Navbar from "../navbar/Navbar";
 
 export interface UserData {
   apiKey: string;
@@ -57,29 +54,29 @@ export interface UserData {
   uid: string;
   university: string;
   yearOfProgram: string;
-  latestMessage?:string;
-  lastFotdTime: Timestamp,
-  lastFotdId: string
+  latestMessage?: string;
+  lastFotdTime: Timestamp;
+  lastFotdId: string;
 }
 
 type pageProps = {
   user: User;
 };
 
-const page: React.FC<pageProps> = ({user}) => {
+const page: React.FC<pageProps> = ({ user }) => {
   const [loading, setLoading] = React.useState(true);
   const [userData, setUserData] = React.useState<UserData>();
-  const [selectedCategory,setSelectedCategory] = React.useState('FOTD')
-  const [messagingStateValue,setMessagingStateValue] = useRecoilState(messagingState)
+  const [selectedCategory, setSelectedCategory] = React.useState("FOTD");
+  const [messagingStateValue, setMessagingStateValue] =
+    useRecoilState(messagingState);
   const router = useRouter();
 
   //get all the user info and friend info
   React.useEffect(() => {
     getUserDetails();
-    getFriends()
+    getFriends();
   }, [user]);
 
-  
   const logout = async () => {
     await signOut(auth);
   };
@@ -108,47 +105,77 @@ const page: React.FC<pageProps> = ({user}) => {
     const friendsDocsRef = collection(userDocRef, "friends");
     const friendsDocs = await getDocs(friendsDocsRef);
     const friendIds = friendsDocs.docs.map((friendDoc) => friendDoc.id);
-  
+
     // Get user data and latest messages for each friend
     const friendsDataPromises = friendIds.map(async (friendId) => {
       const friendDocRef = doc(firestore, "users", friendId);
       const friendDoc = await getDoc(friendDocRef);
-  
+
       if (friendDoc.exists()) {
-        const friendData = { id: friendDoc.id, ...friendDoc.data(), latestMessage:""};
-  
+        const friendData = {
+          id: friendDoc.id,
+          ...friendDoc.data(),
+          latestMessage: "",
+        };
+
         // Get the latest message from the user's subcollection "friends"
-        const latestMessageRef = doc(firestore,`users/${user?.uid}/friends`,friendData.id)
-        const latestMessage = await getDoc(latestMessageRef)
-        if(latestMessage.exists()){
-          let temp = latestMessage.data().latestMessage
-          friendData.latestMessage = temp
+        const latestMessageRef = doc(
+          firestore,
+          `users/${user?.uid}/friends`,
+          friendData.id
+        );
+        const latestMessage = await getDoc(latestMessageRef);
+        if (latestMessage.exists()) {
+          let temp = latestMessage.data().latestMessage;
+          friendData.latestMessage = temp;
         }
-        
+
         return friendData;
       } else {
         // Handle case when a friend document is not found
         return null;
       }
     });
-  
+
     // Resolve all promises to get friend data
     const friendsData = await Promise.all(friendsDataPromises);
-  
+
     setMessagingStateValue((prev) => ({
       ...prev,
       myFriends: friendsData as UserData[],
       friendsFetched: true,
     }));
   };
-  
+
   return (
     <>
-      <PageContent>
-        <LeftSection userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
-        <MiddleSection userData={userData } selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
-        <RightSection userData={userData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
-      </PageContent>
+      <Flex width="100%" justify="center">
+        <Navbar
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+        <Flex direction="column" width={{ base: "25%" }}>
+          <LeftSection
+            userData={userData}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+        </Flex>
+        <Flex direction="column" width={{ base: "50%", md: "50%" }}>
+          <MiddleSection
+            userData={userData}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+        </Flex>
+        <Flex direction="column" width={{ base: "25%" }}>
+          <RightSection
+            userData={userData}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+        </Flex>
+      </Flex>
     </>
   );
 };

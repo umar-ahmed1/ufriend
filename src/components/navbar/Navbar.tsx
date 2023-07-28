@@ -16,11 +16,12 @@ import { signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
 type NavbarProps = {
+  selectedCategory: string;
+  setSelectedCategory:React.Dispatch<React.SetStateAction<string>>
 };
 
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC<NavbarProps> = ({selectedCategory,setSelectedCategory}) => {
   const [user] = useAuthState(auth);
-  const [modalState, setModalState] = useRecoilState(authModalState);
   const router = useRouter();
 
   //the children are the LHS and RHS react fragments
@@ -88,9 +89,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           p="12px"
           _hover={{ bg: "blackAlpha.200" }}
           borderRadius="full"
-          onClick={() => {
-            router.push("/");
-          }}
+          onClick={() => setSelectedCategory('FOTD')}
         >
           <Icon color="brand.400" fontSize={28} as={BsFillPeopleFill} mr={2} />
           <Flex display={{ base: "none", lg: "flex" }}>
@@ -105,6 +104,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           _hover={{ bg: "blackAlpha.200" }}
           p="12px"
           borderRadius="full"
+          onClick={() => setSelectedCategory('Messages')}
         >
           <Icon color="brand.400" fontSize={28} as={AiOutlineMail} mr={2} />
           <Flex display={{ base: "none", lg: "flex" }}>

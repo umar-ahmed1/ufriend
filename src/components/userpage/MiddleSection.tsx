@@ -169,8 +169,8 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
               >
                 <Text fontWeight={700} color='brand.400' fontSize={{base:15,md:25}}>
                   {(messagingStateValue.currentFriend &&
-                    messagingStateValue.currentFriend.displayName) ||
-                    messagingStateValue.currentFriend!.email?.split("@")[0]}
+                    (messagingStateValue.currentFriend.displayName) ||
+                    messagingStateValue.currentFriend?.email?.split("@")[0])}
                 </Text>
                 <Flex align="center">
                   <Text fontSize={{base:12,md:15}} color="gray.400">

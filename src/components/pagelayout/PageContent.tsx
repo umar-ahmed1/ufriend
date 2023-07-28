@@ -11,7 +11,6 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
   return (
     <>
       <Flex width="100%" justify="center">
-        <Navbar />
         {/*LHS*/}
         <Flex direction="column" width={{ base: "25%" }}>
           {children && children[0 as keyof typeof children]}
