@@ -9,7 +9,7 @@ import Navbar from "../navbar/Navbar";
 import MessagesMiddleSection from "./MessagesMiddleSection";
 import { useRecoilState } from "recoil";
 import { messagingState } from "../atoms/messagingAtom";
-import UserShowcase from "../userpage/UserShowcase";
+import UserShowcaseMessages from "./UserShowcaseMessages";
 
 type MessagesSectionProps = {
     userData?: UserData;
@@ -43,7 +43,7 @@ const MessagesSection:React.FC<MessagesSectionProps> = ({userData,selectedCatego
           />
         </Flex>
         <Flex direction="column" width={{ base: "25%" }}>
-          <UserShowcase
+          <UserShowcaseMessages
           userData={messagingStateValue.currentFriend}
           type={"right"}
           setSelectedCategory={setSelectedCategory}

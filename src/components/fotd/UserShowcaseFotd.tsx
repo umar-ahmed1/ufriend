@@ -12,15 +12,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { AiOutlineUser } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { messagingState } from "../atoms/messagingAtom";
-import { UserData } from "./UserHome";
+import { UserData } from "../userpage/UserHome";
 
-type UserShowcaseProps = {
+type UserShowcaseFotdProps = {
   userData?: UserData;
   type: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const UserShowcase: React.FC<UserShowcaseProps> = ({
+const UserShowcaseFotd: React.FC<UserShowcaseFotdProps> = ({
   userData,
   type,
   setSelectedCategory,
@@ -96,7 +96,7 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({
   };
 
   return (
-    <Flex width="100%" height={type=='middle' ? '90vh' : '100vh'} position="relative">
+    <Flex width="100%" height={'100vh'} position="relative">
       {userData?.photoURL ? (
         <AspectRatio width='100%' height='100%' ratio={16/9}>
           <Image src={`${userData.photoURL}`} alt="User Profile" />
@@ -110,7 +110,7 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({
         bottom="0"
         width="100%"
         height="30%"
-        background="linear-gradient(rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.6),rgba(0,0,0,0.8), rgba(0, 0, 0, 0.9))"
+        background="linear-gradient(rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.7),rgba(0,0,0,0.8), rgba(0, 0, 0, 0.9))"
         pointerEvents="none"
       />
       {/* The content of the box */}
@@ -120,23 +120,23 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({
         left="0%"
         right="0%"
         width="100%"
-        height="20%"
+        height="25%"
         padding="20px"
         color="white"
       >
         <Flex width="100%" align="center">
           <Flex width="100%" direction="column">
             <Text
-              fontSize={{ base: 20, sm: 25, md: 35 }}
+              fontSize={{ base: 20, sm: 25, md: 45 }}
               fontWeight={700}
               color="brand.100"
             >
               {userData && userData.displayName}
             </Text>
-            <Text fontSize={{ base: 15, sm: 20, md: 25 }}>{`${
+            <Text fontSize={{ base: 15, sm: 20, md: 30 }}>{`${
               userData && userData.major
             }, ${userData && userData.yearOfProgram}rd year`}</Text>
-            <Text fontSize={{ base: 12, sm: 15, md: 18 }}>
+            <Text fontSize={{ base: 12, sm: 15, md: 25 }}>
               {userData && userData.bio}
             </Text>
           </Flex>
@@ -160,4 +160,4 @@ const UserShowcase: React.FC<UserShowcaseProps> = ({
     </Flex>
   );
 };
-export default UserShowcase;
+export default UserShowcaseFotd;

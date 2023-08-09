@@ -22,14 +22,14 @@ const FotdSection: React.FC<FotdSectionProps> = ({
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
-      <Flex direction="column" width={{ base: "75%", md: "75%" }}>
+      <Flex direction="column" width={{ base: "40%", md: "40%" }}>
         <MiddleSection
           userData={userData}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
       </Flex>
-      <Flex direction="column" width={{ base: "25%" }}>
+      <Flex direction="column" width={{ base: "28%" }}>
         <FotdRightSection
           userData={userData}
           selectedCategory={selectedCategory}

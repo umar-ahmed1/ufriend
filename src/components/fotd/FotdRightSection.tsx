@@ -3,7 +3,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import { messagingState } from "../atoms/messagingAtom";
 import { UserData } from "../userpage/UserHome";
-import UserShowcase from "../userpage/UserShowcase";
+import UserShowcase from "../messaging/UserShowcaseMessages";
 
 type FotdRightSectionProps = {
   userData?: UserData;
@@ -19,7 +19,6 @@ const FotdRightSection: React.FC<FotdRightSectionProps> = ({
 
   return (
     <Flex width='100%' direction='column'>
-      Hi
     </Flex>
   );
 };

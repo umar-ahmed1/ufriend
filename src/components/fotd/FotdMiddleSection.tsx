@@ -1,17 +1,8 @@
 import {
   Flex,
-  Text,
-  Image,
-  Icon,
-  Box,
-  AspectRatio,
-  Stack,
 } from "@chakra-ui/react";
 import React from "react";
 import { UserData } from "../userpage/UserHome";
-import { AiOutlineUser, AiFillPhone } from "react-icons/ai";
-import UserShowcase from "../userpage/UserShowcase";
-import MessageBox from "../messaging/MessageBox";
 import {
   collection,
   doc,
@@ -25,7 +16,7 @@ import { auth, firestore } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { messagingState } from "../atoms/messagingAtom";
-import { HiOutlineDotsCircleHorizontal } from "react-icons/hi";
+import UserShowcaseFotd from "./UserShowcaseFotd";
 
 type FotdMiddleSectionProps = {
   userData?: UserData;
@@ -128,24 +119,7 @@ const MiddleSection: React.FC<FotdMiddleSectionProps> = ({
 
   return (
     <Flex direction="column" width="100%">
-      <Flex
-        width="100%"
-        height="10vh"
-        align="center"
-        justify="center"
-        borderBottom="1px solid"
-        borderRight="1px solid"
-        borderColor="gray.200"
-      >
-        <Text
-          color="brand.100"
-          fontSize={{ base: 20, sm: 28, md: 40 }}
-          fontWeight={700}
-        >
-          Friend of the Day
-        </Text>
-      </Flex>
-      <UserShowcase
+      <UserShowcaseFotd
         userData={fotd}
         type={"middle"}
         setSelectedCategory={setSelectedCategory}

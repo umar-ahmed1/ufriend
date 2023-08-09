@@ -10,7 +10,7 @@ import {
 import React from "react";
 import { UserData } from "../userpage/UserHome";
 import { AiOutlineUser, AiFillPhone } from "react-icons/ai";
-import UserShowcase from "../userpage/UserShowcase";
+import UserShowcase from "./UserShowcaseMessages";
 import MessageBox from "../messaging/MessageBox";
 import {
   collection,
