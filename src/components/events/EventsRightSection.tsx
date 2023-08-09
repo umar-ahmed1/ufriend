@@ -9,15 +9,15 @@ type EventsRightSectionProps = {
 
 const EventsRightSection: React.FC<EventsRightSectionProps> = ({selectedCategory,setSelectedCategory}) => {
   return (
-    <Flex width="100%" border="1px solid red" height="100%" direction="column" pl={{ base: 2, md: 4 }} pr={{ base: 2, md: 4 }}>
+    <Flex width="100%" borderLeft='1px solid' borderColor='gray.200' height="100%" direction="column" pl={{ base: 2, md: 4 }} pr={{ base: 2, md: 4 }}>
       <Flex
         width="100%"
         justify="space-between"
         align="center"
+        mt={{ base: 2, md: 4 }}
       >
         <Text
-
-          mt={{ base: 2, md: 4 }}
+          
           color="brand.400"
           fontWeight={700}
           fontSize={{ base: "20px", sm: "25px", md: "30px" }}
@@ -26,14 +26,12 @@ const EventsRightSection: React.FC<EventsRightSectionProps> = ({selectedCategory
         </Text>
         <Flex
           align="center"
-          ml={{ base: 2, md: 4 }}
-          mt={{ base: 2, md: 4 }}
-          mr={{ base: 2, md: 4 }}
+          width='60%'
         >
           <Input placeholder="Search Events" maxWidth="75%"></Input>
           <Input maxWidth='25%' placeholder="Date"></Input>
         </Flex>
-        <Button>Create Event</Button>
+        <Button color='white' backgroundColor='brand.400' _hover={{opacity:0.9}}>Create Event</Button>
       </Flex>
       <Stack mt={{base:2,md:4}}>
         <Text fontSize={30}>Today</Text>

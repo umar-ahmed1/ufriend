@@ -22,10 +22,10 @@ const EventSection: React.FC<EventSectionProps> = ({
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
-      <Flex direction="column" width={{ base: "25%", md: "25%" }}>
+      <Flex direction="column" width={{ base: "20%", md: "25%" }}>
         <EventsLeftSection />
       </Flex>
-      <Flex direction="column" width={{ base: "65%", md: "65%" }}>
+      <Flex direction="column" width={{ base: "70%", md: "70%" }}>
         <EventsRightSection
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
