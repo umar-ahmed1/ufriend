@@ -121,6 +121,7 @@ const Navbar: React.FC<NavbarProps> = ({selectedCategory,setSelectedCategory}) =
           _hover={{ bg: "blackAlpha.200" }}
           p="12px"
           borderRadius="full"
+          onClick={() => setSelectedCategory('Events')}
         >
           <Icon color="brand.400" fontSize={24} as={BsFillCalendarEventFill} mr={2} />
           <Flex display={{ base: "none", lg: "flex" }}>

@@ -18,6 +18,7 @@ import MessagesSection from "../messaging/MessagesSection";
 import { messagingState } from "../atoms/messagingAtom";
 import { useRecoilState } from "recoil";
 import FotdSection from "../fotd/FotdSection";
+import EventSection from "../events/EventSection";
 
 export interface UserData {
   apiKey: string;
@@ -149,6 +150,13 @@ const page: React.FC<pageProps> = ({ user }) => {
       )}
         {selectedCategory == "FOTD" && (
         <FotdSection
+          userData={userData}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      )}
+      {selectedCategory == "Events" && (
+        <EventSection
           userData={userData}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
