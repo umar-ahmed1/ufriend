@@ -56,17 +56,17 @@ const Message: React.FC<MessageProps> = ({
     >
       <Flex direction="column" maxWidth={{ base: "90%", sm: "80%", md: "60%" }}>
         <Flex
-          backgroundColor={sender === "me" ? "blue.400" : "gray.400"}
+          backgroundColor={sender === "me" ? "brand.400" : "brand.300"}
           pl={{ base: 2, md: 4 }}
           pr={{ base: 2, md: 4 }}
           borderRadius="xl"
           width="100%"
           align="center"
           justify="flex-start"
-          pt={1}
-          pb={1}
+          pt={{base:1,sm:2}}
+          pb={{base:1,sm:2}}
         >
-          <Text color="white">{contents}</Text>
+          <Text color={sender === "me" ? "white" : "black"} fontSize={15}>{contents}</Text>
         </Flex>
         <Flex justify="flex-start" align="center" width="100%" mt={1} ml={2}>
           {sender == "you" && (

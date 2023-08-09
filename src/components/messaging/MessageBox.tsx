@@ -1,5 +1,5 @@
 import { auth, firestore } from "@/firebase/clientApp";
-import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, Text, Icon } from "@chakra-ui/react";
 import {
   collection,
   doc,
@@ -21,7 +21,11 @@ import { MessageChannel } from "worker_threads";
 import { messagingState } from "../atoms/messagingAtom";
 import { UserDetails } from "../loginsignup/CreateAccount/CreateAccount";
 import Message from "./Message";
-
+import {
+  AiOutlineFileImage,
+  AiOutlineFileGif,
+  AiOutlineSend,
+} from "react-icons/ai";
 type MessageBoxProps = {
   userData?: UserDetails;
 };
@@ -38,7 +42,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   const [loading, setLoading] = React.useState(false);
   const [messageContents, setMessageContents] = React.useState("");
   const [user] = useAuthState(auth);
-  const [messagingStateValue, setMessagingStateValue] = useRecoilState(messagingState);
+  const [messagingStateValue, setMessagingStateValue] =
+    useRecoilState(messagingState);
 
   const sendMessage = async () => {
     if (messageContents == "") {
@@ -62,11 +67,15 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
     }));
     //now update the latest sent message
     //in the person u sent to friends get ur uid snippet
-    const sentToRef = doc(firestore,`users/${messagingStateValue.currentFriend!.uid}/friends`,user!.uid)
-    await updateDoc(sentToRef,{
-      latestMessage:messageContents
-    })
-    setMessageContents("")
+    const sentToRef = doc(
+      firestore,
+      `users/${messagingStateValue.currentFriend!.uid}/friends`,
+      user!.uid
+    );
+    await updateDoc(sentToRef, {
+      latestMessage: messageContents,
+    });
+    setMessageContents("");
     setLoading(false);
   };
 
@@ -96,15 +105,14 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   };
 
   React.useEffect(() => {
-    if (messagingStateValue.currentFriend){
+    if (messagingStateValue.currentFriend) {
       getMessages();
-    } else{
+    } else {
       setMessagingStateValue((prev) => ({
         ...prev,
-        currentFriend: messagingStateValue.myFriends[0]
+        currentFriend: messagingStateValue.myFriends[0],
       }));
     }
-
   }, [messagingStateValue.currentFriend]);
 
   // Create a ref for the inner container (Box)
@@ -113,7 +121,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
   React.useEffect(() => {
     // Scroll to the bottom of the container when the messages update
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [messagingStateValue.currentMessages]);
 
@@ -126,10 +135,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
       overflow="hidden"
     >
       <Box
-        height='100%'
+        height="100%"
         maxHeight="calc(90vh - 100px)"
         overflow="auto"
-        px={4} 
+        px={4}
         ref={messagesContainerRef}
         flex={1}
       >
@@ -139,8 +148,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
               key={index}
               contents={message.contents}
               sender={message.sentBy == user!.uid ? "me" : "you"}
-              senderName = {messagingStateValue.currentFriend!.displayName}
-              timeSent = {message.createdAt}
+              senderName={messagingStateValue.currentFriend!.displayName}
+              timeSent={message.createdAt}
             />
           ))}
         </Flex>
@@ -148,36 +157,36 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
       <Flex
         position="absolute"
         bottom="0"
-        borderTop="1px solid grey"
+        borderTop="1px solid"
+        borderColor="gray.200"
         width="100%"
         height="100px"
         align="center"
         justify="space-between"
-        backgroundColor="gray.100"
         pl={2}
         pr={2}
       >
-        <Button
-          backgroundColor="brand.100"
-          borderRadius="full"
-          _hover={{ opacity: 0.9 }}
+        <Icon
+          as={AiOutlineFileGif}
+          color="brand.400"
+          _hover={{ opacity: 0.9, cursor: "pointer" }}
           mr={1}
-        >
-          Gif
-        </Button>
-        <Button
-          backgroundColor="brand.100"
-          borderRadius="full"
-          _hover={{ opacity: 0.9 }}
-        >
-          Image
-        </Button>
+          fontSize={{ base: 15, sm: 25, md: 35 }}
+        ></Icon>
+        <Icon
+          as={AiOutlineFileImage}
+          color="brand.400"
+          _hover={{ opacity: 0.9, cursor: "pointer" }}
+          mr={1}
+          fontSize={{ base: 15, sm: 25, md: 35 }}
+        ></Icon>
         <Input
           type="text"
           height="60%"
-          width="100%"
+          maxWidth="80%"
           border="none"
-          placeholder="Send A Message"
+          backgroundColor="gray.200"
+          placeholder="Write something...."
           ml={1}
           mr={1}
           value={messageContents}
@@ -185,14 +194,14 @@ const MessageBox: React.FC<MessageBoxProps> = ({ userData }) => {
             setMessageContents(event.target.value);
           }}
         ></Input>
-        <Button
-          backgroundColor="brand.100"
-          borderRadius="full"
-          _hover={{ opacity: 0.9 }}
-          onClick={sendMessage}
-          isLoading={loading}
-        >
-          Send
+        <Button onClick={sendMessage} isLoading={loading} backgroundColor='white'>
+          <Icon
+            as={AiOutlineSend}
+            color="brand.400"
+            _hover={{ opacity: 0.9, cursor: "pointer" }}
+            mr={1}
+            fontSize={{ base: 15, sm: 25, md: 35 }}
+          ></Icon>
         </Button>
       </Flex>
     </Flex>
