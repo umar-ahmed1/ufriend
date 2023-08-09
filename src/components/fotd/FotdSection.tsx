@@ -1,9 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import React from "react";
 import Navbar from "../navbar/Navbar";
-import MiddleSection from "./FotdMiddleSection";
 import { UserData } from "../userpage/UserHome";
-import FotdRightSection from "./FotdRightSection";
+import FotdMiddleSection from "./FotdMiddleSection";
 
 type FotdSectionProps = {
   userData?: UserData;
@@ -22,15 +21,8 @@ const FotdSection: React.FC<FotdSectionProps> = ({
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
-      <Flex direction="column" width={{ base: "40%", md: "40%" }}>
-        <MiddleSection
-          userData={userData}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-        />
-      </Flex>
-      <Flex direction="column" width={{ base: "28%" }}>
-        <FotdRightSection
+      <Flex direction="column" width={{ base: "69%", md: "69%" }}>
+        <FotdMiddleSection
           userData={userData}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}

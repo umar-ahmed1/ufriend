@@ -1,5 +1,15 @@
 import { auth, firestore } from "@/firebase/clientApp";
-import { Flex, Icon, Image, Box, Text, Button, AspectRatio } from "@chakra-ui/react";
+import {
+  Flex,
+  Icon,
+  Image,
+  Box,
+  Text,
+  Button,
+  AspectRatio,
+  Stack,
+  Divider,
+} from "@chakra-ui/react";
 import {
   doc,
   getDoc,
@@ -13,6 +23,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import { messagingState } from "../atoms/messagingAtom";
 import { UserData } from "../userpage/UserHome";
+import { FaUniversity, FaUserGraduate } from "react-icons/fa";
 
 type UserShowcaseFotdProps = {
   userData?: UserData;
@@ -96,64 +107,88 @@ const UserShowcaseFotd: React.FC<UserShowcaseFotdProps> = ({
   };
 
   return (
-    <Flex width="100%" height={'100vh'} position="relative">
+    <Flex
+      width="100%"
+      height={"100vh"}
+      position="relative"
+      align="center"
+      direction="column"
+      backgroundColor='gray.50'
+    >
       {userData?.photoURL ? (
-        <AspectRatio width='100%' height='100%' ratio={16/9}>
-          <Image src={`${userData.photoURL}`} alt="User Profile" />
+        <AspectRatio width="75%" height="45%" ratio={16 / 9} mt="5%">
+          <Image src={`${userData.photoURL}`} alt="User Profile" borderRadius='2xl'/>
         </AspectRatio>
       ) : (
-        <Icon fontSize={40} mr={{base:0,md:1}} color="brand.100" as={AiOutlineUser} />
+        <Icon
+          fontSize={40}
+          mr={{ base: 0, md: 1 }}
+          color="brand.100"
+          as={AiOutlineUser}
+        />
       )}
-      {/* The box with black shadow background */}
-      <Box
-        position="absolute"
-        bottom="0"
-        width="100%"
-        height="30%"
-        background="linear-gradient(rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.7),rgba(0,0,0,0.8), rgba(0, 0, 0, 0.9))"
-        pointerEvents="none"
-      />
       {/* The content of the box */}
       <Box
         position="absolute"
-        bottom="0"
-        left="0%"
-        right="0%"
-        width="100%"
-        height="25%"
+        bottom="5%"
+        width="75%"
+        height="40%"
         padding="20px"
         color="white"
+        backgroundColor="brand.300"
+        borderRadius='2xl'
       >
         <Flex width="100%" align="center">
-          <Flex width="100%" direction="column">
+          <Stack width="100%" direction="column">
             <Text
-              fontSize={{ base: 20, sm: 25, md: 45 }}
+              fontSize={{ base: 15, sm: 20, md: 40 }}
               fontWeight={700}
-              color="brand.100"
+              color="brand.400"
             >
               {userData && userData.displayName}
             </Text>
-            <Text fontSize={{ base: 15, sm: 20, md: 30 }}>{`${
-              userData && userData.major
-            }, ${userData && userData.yearOfProgram}rd year`}</Text>
-            <Text fontSize={{ base: 12, sm: 15, md: 25 }}>
-              {userData && userData.bio}
-            </Text>
-          </Flex>
+            <Flex align="center">
+              <Icon
+                as={FaUserGraduate}
+                fontSize={{ base: 10, sm: 15, md: 25 }}
+                color="brand.400"
+                mr={{ base: 1, sm: 2 }}
+              />
+              <Text color="black" fontSize={{ base: 10, sm: 15, md: 25 }}>{`${
+                userData && userData.major
+              }, ${userData && userData.yearOfProgram}rd year`}</Text>
+            </Flex>
+            <Flex align="center" mt={{ base: 1, md: 2 }}>
+              <Icon
+                as={FaUniversity}
+                fontSize={{ base: 10, sm: 15, md: 20 }}
+                color="brand.400"
+                mr={{ base: 1, sm: 2 }}
+              />
+              <Text color="black" fontSize={{ base: 10, sm: 15, md: 20 }}>
+                {userData && userData.university}
+              </Text>
+            </Flex>
+            <Flex direction='column' maxWidth='75%'>
+              <Divider borderColor="brand.400" mt={2} mb={{ base: 1, md: 2 }} />
+              <Text color="gray.500" fontSize={{ base: 12, sm: 15, md: 20 }}>
+                {userData && userData.bio}
+              </Text>
+              <Divider borderColor="brand.400" mt={{ base: 1, md: 2 }} />
+            </Flex>
+          </Stack>
           <Flex height="100%">
-            {type == "middle" && (
-              <Button
-                backgroundColor="brand.100"
-                _hover={{ cursor: "pointer", opacity: "0.9" }}
-                height={{ base: "30px", md: "50px" }}
-                width={{ base: "75%", md: "100%" }}
-                fontSize={{ base: 12, md: 18 }}
-                isLoading={loading}
-                onClick={handleMessageFOTD}
-              >
-                Message
-              </Button>
-            )}
+            <Button
+              backgroundColor="brand.100"
+              _hover={{ cursor: "pointer", opacity: "0.9" }}
+              height={{ base: "30px", md: "50px" }}
+              width={{ base: "75%", md: "100%" }}
+              fontSize={{ base: 12, md: 18 }}
+              isLoading={loading}
+              onClick={handleMessageFOTD}
+            >
+              Message
+            </Button>
           </Flex>
         </Flex>
       </Box>

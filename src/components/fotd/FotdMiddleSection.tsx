@@ -24,7 +24,7 @@ type FotdMiddleSectionProps = {
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const MiddleSection: React.FC<FotdMiddleSectionProps> = ({
+const FotdMiddleSection: React.FC<FotdMiddleSectionProps> = ({
   userData,
   selectedCategory,
   setSelectedCategory,
@@ -127,4 +127,4 @@ const MiddleSection: React.FC<FotdMiddleSectionProps> = ({
     </Flex>
   );
 };
-export default MiddleSection;
+export default FotdMiddleSection;
