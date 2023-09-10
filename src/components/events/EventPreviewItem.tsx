@@ -7,14 +7,14 @@ import { useRecoilState } from "recoil";
 import { messagingState } from "../atoms/messagingAtom";
 import { UserData } from "../userpage/UserHome";
 
-type EventItemProps = {
+type EventPreviewItemProps = {
   userData?: UserData;
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
   contents: string;
 };
 
-const EventItem: React.FC<EventItemProps> = ({
+const EventPreviewItem: React.FC<EventPreviewItemProps> = ({
   userData,
   selectedCategory,
   setSelectedCategory,
@@ -68,4 +68,4 @@ const EventItem: React.FC<EventItemProps> = ({
     </Flex>
   );
 };
-export default EventItem;
+export default EventPreviewItem;
