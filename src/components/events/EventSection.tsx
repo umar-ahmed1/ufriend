@@ -2,8 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import React from "react";
 import Navbar from "../navbar/Navbar";
 import { UserData } from "../userpage/UserHome";
-import EventsLeftSection from "./EventsLeftSection";
-import EventsRightSection from "./EventsRightSection";
+import YourEvents from "./YourEvents";
+import EventsPreviewArea from "./EventsPreviewArea";
 
 type EventSectionProps = {
   userData?: UserData;
@@ -23,13 +23,13 @@ const EventSection: React.FC<EventSectionProps> = ({
         setSelectedCategory={setSelectedCategory}
       />
       <Flex direction="column" width={{ base: "20%", md: "25%" }}>
-        <EventsLeftSection />
+        <YourEvents />
       </Flex>
-      <Flex direction="column" width={{ base: "70%", md: "70%" }}>
-        <EventsRightSection
+      <Flex direction="column" width={{ base: "80%", md: "75%" }}>
+        {true && <EventsPreviewArea
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
-        />
+        />}
       </Flex>
     </Flex>
   );

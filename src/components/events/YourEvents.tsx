@@ -1,9 +1,9 @@
 import { Flex, Input, Text } from "@chakra-ui/react";
 import React from "react";
 
-type EventsLeftSectionProps = {};
+type YourEventsProps = {};
 
-const EventsLeftSection: React.FC<EventsLeftSectionProps> = () => {
+const YourEvents: React.FC<YourEventsProps> = () => {
   return (
     <Flex>
       <Flex
@@ -33,4 +33,4 @@ const EventsLeftSection: React.FC<EventsLeftSectionProps> = () => {
     </Flex>
   );
 };
-export default EventsLeftSection;
+export default YourEvents;

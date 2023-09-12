@@ -66,17 +66,17 @@ const Navbar: React.FC<NavbarProps> = ({selectedCategory,setSelectedCategory}) =
       <Stack
         direction="column"
         spacing={2}
-        pl={3}
+        pl={{sm:0,md:3}}
         pb={3}
-        pr={{ base: 0, lg: 6 }}
-        mr={{ base: 0, lg: 6 }}
+        pr={{ base: 0,sm:2,md:4, lg: 6 }}
+        mr={{ base: 0,sm:2,md:4, lg: 6 }}
         mt={{base:2,md:4}}
       >
         <Flex
           align="center"
           cursor="pointer"
           width="100%"
-          p="12px"
+          p={"12px"}
           _hover={{ bg: "blackAlpha.200" }}
           borderRadius="full"
         >

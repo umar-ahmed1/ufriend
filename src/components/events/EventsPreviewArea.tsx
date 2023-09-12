@@ -3,12 +3,12 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import EventPreviewItem from "./EventPreviewItem";
 
-type EventsRightSectionProps = {
+type EventsPreviewAreaProps = {
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const EventsRightSection: React.FC<EventsRightSectionProps> = ({selectedCategory,setSelectedCategory}) => {
+const EventsPreviewArea: React.FC<EventsPreviewAreaProps> = ({selectedCategory,setSelectedCategory}) => {
 
   const router = useRouter()
 
@@ -54,4 +54,4 @@ const EventsRightSection: React.FC<EventsRightSectionProps> = ({selectedCategory
     </Flex>
   );
 };
-export default EventsRightSection;
+export default EventsPreviewArea;
