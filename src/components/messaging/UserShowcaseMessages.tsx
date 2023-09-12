@@ -35,9 +35,9 @@ const UserShowcaseMessages: React.FC<UserShowcaseMessagesProps> = ({
     useRecoilState(messagingState);
 
   return (
-    <Flex width="100%" height={"100vh"} position="relative">
+    <Flex width="100%" height={"100vh"} position="relative" align='center' direction='column'>
       {userData?.photoURL ? (
-        <AspectRatio width="100%" height="65%" ratio={16 / 9}>
+        <AspectRatio width="100%" height="50%" ratio={16 / 9} >
           <Image src={`${userData.photoURL}`} alt="User Profile" />
         </AspectRatio>
       ) : (
@@ -50,16 +50,11 @@ const UserShowcaseMessages: React.FC<UserShowcaseMessagesProps> = ({
       )}
       {/* The content of the box */}
       <Box
-        position="absolute"
-        bottom="0%"
-        left="0%"
-        right="0%"
-        width="100%"
-        height="50%"
-        borderTopRadius="2xl"
         padding={5}
         color="white"
         backgroundColor="brand.300"
+        height='50%'
+        width='100%'
       >
         <Flex width="100%" align="center">
           <Stack width="100%" direction="column">
