@@ -24,22 +24,28 @@ import { useRecoilState } from "recoil";
 import { messagingState } from "../atoms/messagingAtom";
 import { UserData } from "../userpage/UserHome";
 import { FaUniversity, FaUserGraduate } from "react-icons/fa";
+import { Time } from "./FotdMiddleSection";
 
 type UserShowcaseFotdProps = {
   userData?: UserData;
   type: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+  timeRemaining: Time;
+  setTimeRemaining:React.Dispatch<React.SetStateAction<Time>>;
 };
 
 const UserShowcaseFotd: React.FC<UserShowcaseFotdProps> = ({
   userData,
   type,
   setSelectedCategory,
+  timeRemaining,
+  setTimeRemaining
 }) => {
   const [user] = useAuthState(auth);
   const [loading, setLoading] = React.useState(false);
   const [messagingStateValue, setMessagingStateValue] =
     useRecoilState(messagingState);
+
 
   const handleMessageFOTD = async () => {
     try {
@@ -106,6 +112,41 @@ const UserShowcaseFotd: React.FC<UserShowcaseFotdProps> = ({
     }
   };
 
+// Function to update the timer
+function updateTimer() {
+  setTimeRemaining((prev) => {
+    let updatedTime = { ...prev };
+
+    // Decrement the seconds
+    updatedTime.seconds--;
+
+    if (updatedTime.seconds < 0) {
+      updatedTime.minutes--;
+      updatedTime.seconds = 59;
+
+      if (updatedTime.minutes < 0) {
+        updatedTime.hours--;
+        updatedTime.minutes = 59;
+
+        if (updatedTime.hours < 0) {
+          // Timer has reached 0, you can handle this event here
+          console.log("Timer has reached 0!");
+          return { hours: 0, minutes: 0, seconds: 0 };
+        }
+      }
+    }
+
+    return updatedTime;
+  });
+}
+
+//Set the interval to update the countdown every second and when the component dismounts clear the interval
+React.useEffect(() => {
+  const timerInterval = setInterval(() => updateTimer(),1000)
+  return () => {clearInterval(timerInterval);}
+},[])
+
+
   return (
     <Flex
       width="100%"
@@ -115,8 +156,11 @@ const UserShowcaseFotd: React.FC<UserShowcaseFotdProps> = ({
       direction="column"
       backgroundColor='gray.50'
     >
+      <Flex mt={2}>
+        <Text fontSize={20}>{`Time Until Next Friend: ${timeRemaining.hours} hours ${timeRemaining.minutes} minutes ${timeRemaining.seconds} seconds`}</Text>
+      </Flex>
       {userData?.photoURL ? (
-        <AspectRatio width="75%" height="45%" ratio={16 / 9} mt="5%">
+        <AspectRatio width="75%" height="50%" ratio={16 / 9} mt={{base:2,md:4}}>
           <Image src={`${userData.photoURL}`} alt="User Profile" borderRadius='2xl'/>
         </AspectRatio>
       ) : (
@@ -130,9 +174,9 @@ const UserShowcaseFotd: React.FC<UserShowcaseFotdProps> = ({
       {/* The content of the box */}
       <Box
         position="absolute"
-        bottom="5%"
+        bottom="2%"
         width="75%"
-        height="40%"
+        height="38%"
         padding="20px"
         color="white"
         backgroundColor="brand.300"

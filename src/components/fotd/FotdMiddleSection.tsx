@@ -24,6 +24,12 @@ type FotdMiddleSectionProps = {
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 };
 
+export interface Time {
+  hours:number,
+  minutes:number,
+  seconds:number,
+}
+
 const FotdMiddleSection: React.FC<FotdMiddleSectionProps> = ({
   userData,
   selectedCategory,
@@ -34,6 +40,7 @@ const FotdMiddleSection: React.FC<FotdMiddleSectionProps> = ({
   const [fotd, setFotd] = React.useState<UserData>();
   const [messagingStateValue, setMessagingStateValue] =
     useRecoilState(messagingState);
+  const [timeRemaining,setTimeRemaining] = React.useState<Time>({hours:0,minutes:0,seconds:0})
 
   //function to get all the user details from firestore
   const getFOTD = async () => {
@@ -45,6 +52,8 @@ const FotdMiddleSection: React.FC<FotdMiddleSectionProps> = ({
       const timeDiff = lastFotdDate
         ? currentDate.getTime() - lastFotdDate?.getTime()
         : 86400000;
+
+      calculateTimeRemaining(timeDiff)
 
       //if the time diff is less than 24 hours then dont get a new FOTD but get the old one
       if (timeDiff < 86400000) {
@@ -110,6 +119,15 @@ const FotdMiddleSection: React.FC<FotdMiddleSectionProps> = ({
     }
   };
 
+  const calculateTimeRemaining = (timeDiff: number) => {
+    const timeUntilNextFOTD = 86400000 - timeDiff;
+    // Calculate hours, minutes, and seconds from timeDiff
+    const hours = Math.floor(timeUntilNextFOTD / 3600000);
+    const minutes = Math.floor((timeUntilNextFOTD % 3600000) / 60000);
+    const seconds = Math.floor((timeUntilNextFOTD % 60000) / 1000);
+    setTimeRemaining({hours,minutes,seconds})
+  };
+
   React.useEffect(() => {
     if (userData && messagingStateValue.friendsFetched) {
       console.log(messagingStateValue);
@@ -123,6 +141,8 @@ const FotdMiddleSection: React.FC<FotdMiddleSectionProps> = ({
         userData={fotd}
         type={"middle"}
         setSelectedCategory={setSelectedCategory}
+        timeRemaining = {timeRemaining}
+        setTimeRemaining = {setTimeRemaining}
       />
     </Flex>
   );
