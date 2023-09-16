@@ -1,3 +1,5 @@
+import EventsCreateArea from '@/components/events/EventsCreateArea';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 type pageProps = {
@@ -6,6 +8,10 @@ type pageProps = {
 
 const page:React.FC<pageProps> = () => {
     
-    return <div>Have a good coding</div>
+    return (
+        <>
+            <EventsCreateArea/>
+        </>
+    )
 }
 export default page;
