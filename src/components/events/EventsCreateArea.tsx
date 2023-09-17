@@ -86,7 +86,7 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
   return (
     <>
       <Flex width="100%" direction="column" bgColor="gray.100" height="100vh">
-        <Flex height="400px" width="33%" direction="column" ml="5%" p={5}>
+        <Flex height="400px" width={{base:"100%",sm:"85%",md:"60%",lg:"50%",xl:"33%"}} direction="column" ml={{base:"0%",sm:"3%",md:"5%"}} p={{base:1,sm:3,md:5}}>
           <Text fontSize={30} color="brand.400">
             Create an Event
           </Text>
@@ -150,7 +150,8 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
                 onClick={() => setSelected("Date & Time")}
               >
                 <Icon as={BsFillCalendarDateFill} mr={2}></Icon>
-                <Text>Date & Time</Text>
+                <Text display={{base:"flex",sm:"none"}}>Date</Text>
+                <Text display={{base:"none",sm:"flex"}}>Date & Time</Text>
               </Button>
             </Flex>
             {selected == "Details" && (
