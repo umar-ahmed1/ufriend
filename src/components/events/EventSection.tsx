@@ -4,6 +4,7 @@ import Navbar from "../navbar/Navbar";
 import { UserData } from "../userpage/UserHome";
 import YourEvents from "./YourEvents";
 import EventsPreviewArea from "./EventsPreviewArea";
+import EventsCreateArea from "./EventsCreateArea";
 
 type EventSectionProps = {
   userData?: UserData;

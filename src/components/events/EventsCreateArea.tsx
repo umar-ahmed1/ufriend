@@ -9,38 +9,79 @@ import {
   Stack,
   Text,
   Textarea,
+  Image
 } from "@chakra-ui/react";
-import React from "react";
+import React, { forwardRef } from "react";
 import { UserData } from "../userpage/UserHome";
 import { RiPagesFill } from "react-icons/ri";
 import { BsFillCalendarDateFill } from "react-icons/bs";
+import { AiFillFileImage } from "react-icons/ai";
+import useSelectFile from "@/hooks/useSelectFile";
+import { nanoid } from "nanoid";
+import { storage } from "@/firebase/clientApp";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import "./DatePicker.css"
 
 type EventsCreateAreaProps = {};
 
-type Event = {
+export type EventAttendee = {
+  userId: string;
+  userPic: string;
+  userName: string;
+};
+
+export type Event = {
   title: string;
-  date: string;
-  time: string;
+  date: Date | null;
   description: string;
+  photoURL:string;
   creatorId: string;
-  attendees: UserData[];
+  attendees: EventAttendee[];
 };
 
 const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
   const [eventDetails, setEventDetails] = React.useState<Event>({
     title: "",
-    date: "",
-    time: "",
+    date: null,
     description: "",
+    photoURL:"",
     creatorId: "",
     attendees: [],
   });
 
   const [selected, setSelected] = React.useState("Details");
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
+  const selectedFileRef = React.useRef<HTMLInputElement>(null);
 
-  React.useEffect(() => {
-    console.log(eventDetails)
-  },[eventDetails])
+  const [startDate,setStartDate] = React.useState(null)
+
+  const handleUploadFile = async () => {
+    if (selectedFile) {
+      const randomId = nanoid()
+      const imageRef = ref(storage, `images/${randomId}`);
+      //store in storage (not firestore but the storage) then we can just add the place it is in the storage to the post
+      await uploadString(imageRef, selectedFile, "data_url"); //upload selectedFile in imageRef as type data_url
+      //get the image url
+      const downloadURL = await getDownloadURL(imageRef);
+
+      setEventDetails((prev) => ({
+        ...prev,
+        photoURL: downloadURL
+      }));
+    }
+    }
+
+    const handleSubmit = () => {
+      handleUploadFile()
+      console.log(eventDetails)
+    }
+
+    React.useEffect(() => {
+      console.log(eventDetails)
+    },[eventDetails.photoURL])
 
   return (
     <>
@@ -60,7 +101,7 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
           >
             <Flex width="100%">
               <Button
-                width="50%"
+                width="34%"
                 bgColor="white"
                 border="1px solid"
                 borderColor="gray.100"
@@ -77,7 +118,24 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
                 <Text>Details</Text>
               </Button>
               <Button
-                width="50%"
+                width="33%"
+                bgColor="white"
+                border="1px solid"
+                borderColor="gray.100"
+                height="50px"
+                borderRadius="0"
+                fontWeight={selected == "Image" ? "700" : "400"}
+                color="brand.400"
+                borderBottomColor={
+                  selected == "Image" ? "brand.400" : "gray.100"
+                }
+                onClick={() => setSelected("Image")}
+              >
+                <Icon as={AiFillFileImage} mr={2}></Icon>
+                <Text>Image</Text>
+              </Button>
+              <Button
+                width="33%"
                 bgColor="white"
                 border="1px solid"
                 borderColor="gray.100"
@@ -95,7 +153,7 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
                 <Text>Date & Time</Text>
               </Button>
             </Flex>
-            {selected == "Details" ? (
+            {selected == "Details" && (
               <>
                 <Input
                   ml={5}
@@ -103,10 +161,12 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
                   width="90%"
                   placeholder="Title"
                   value={eventDetails.title}
-                  onChange={(event) => setEventDetails((prev) => ({
-                    ...prev,
-                    title: event.target.value
-                  }))}
+                  onChange={(event) =>
+                    setEventDetails((prev) => ({
+                      ...prev,
+                      title: event.target.value,
+                    }))
+                  }
                 ></Input>
                 <Textarea
                   ml={5}
@@ -114,33 +174,104 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
                   placeholder="Description"
                   resize={"none"}
                   value={eventDetails.description}
-                  onChange={(event) => setEventDetails((prev) => ({
-                    ...prev,
-                    description:event.target.value
-                  }))}
-                />
-              </>
-            ) : (
-              <>
-                <Input
-                  ml={5}
-                  type="text"
-                  width="90%"
-                  placeholder="Date"
-                ></Input>
-                <Textarea
-                  ml={5}
-                  width="90%"
-                  placeholder="Time"
-                  resize={"none"}
+                  onChange={(event) =>
+                    setEventDetails((prev) => ({
+                      ...prev,
+                      description: event.target.value,
+                    }))
+                  }
                 />
               </>
             )}
+            {selected == "Date & Time" && (
+              <>
+              <DatePicker
+                selected={eventDetails.date}
+                showTimeSelect
+                onChange={(date) =>
+                  setEventDetails((prev) => ({
+                    ...prev,
+                    date: date!,
+                  }))
+                }
+                wrapperClassName="datePicker"
+                placeholderText="Select a Date and Time"
+                dateFormat="MMMM d, yyyy h:mm aa"
+              >
+              </DatePicker>
+              {/* <Textarea
+                ml={5}
+                width="90%"
+                placeholder="Time"
+                resize={"none"}
+                value={eventDetails.time}
+                onChange={(event) =>
+                  setEventDetails((prev) => ({
+                    ...prev,
+                    time: event.target.value,
+                  }))
+                }
+              /> */}
+            </>
+            )}
+            {selected == "Image" && (
+              <>
+              <Flex direction="column" justify="center" align="center" width="100%">
+                {selectedFile ? (
+                  <>
+                    <Image
+                      src={selectedFile}
+                      maxWidth="300px"
+                      maxHeight="100px"
+                    ></Image>
+                    <Stack direction="row" spacing={2} mt={4}>
+                      <Button
+                        variant="outline"
+                        height="28px"
+                        border="1px solid grey"
+                        onClick={() => setSelectedFile("")}
+                      >
+                        {" "}
+                        Remove
+                      </Button>
+                    </Stack>
+                  </>
+                ) : (
+                  <Flex
+                    justify="center"
+                    align="center"
+                    height='140px'
+                    border="1px dashed"
+                    borderColor="brand.100"
+                    width="100%"
+                    borderRadius={4}
+                  >
+                    <Button
+                      variant="outline"
+                      height="28px"
+                      border="1px solid grey"
+                      onClick={() => selectedFileRef.current?.click()}
+                    >
+                      Upload
+                    </Button>
+                    <input
+                      ref={selectedFileRef}
+                      type="file"
+                      hidden
+                      onChange={onSelectFile}
+                    />
+                  </Flex>
+                )}
+              </Flex>
+            </>
+            )}
+
             <Flex width="100%" align="center" justify="flex-end" pr={10}>
               <Button
                 bgColor="brand.400"
                 color="white"
                 _hover={{ bgColor: "brand.100", color: "brand.400" }}
+                onClick={handleSubmit}
               >
                 Create Event
               </Button>
