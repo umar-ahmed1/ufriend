@@ -28,8 +28,11 @@ import { doc, collection, serverTimestamp, Timestamp, setDoc, updateDoc } from "
 import Message from "../messaging/Message";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/navigation";
+import { User } from "firebase/auth";
 
-type EventsCreateAreaProps = {};
+type EventsCreateAreaProps = {
+  user:User | null | undefined
+};
 
 export type EventAttendee = {
   userId: string;
@@ -43,19 +46,18 @@ export type UserEvent = {
   date: Date;
   description: string;
   photoURL:string;
-  creatorId: string;
+  creatorId?: string;
   attendees: EventAttendee[];
 };
 
-const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
-  const [user] = useAuthState(auth)
+const EventsCreateArea: React.FC<EventsCreateAreaProps> = ({user}) => {
   const [eventDetails, setEventDetails] = React.useState<UserEvent>({
     id:nanoid(),
     title: "",
     date: new Date(),
     description: "",
     photoURL:"",
-    creatorId: user!.uid,
+    creatorId: user?.uid,
     attendees: [],
   });
 
