@@ -18,12 +18,16 @@ import { BsFillCalendarDateFill } from "react-icons/bs";
 import { AiFillFileImage } from "react-icons/ai";
 import useSelectFile from "@/hooks/useSelectFile";
 import { nanoid } from "nanoid";
-import { storage } from "@/firebase/clientApp";
+import { auth, firestore, storage } from "@/firebase/clientApp";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./DatePicker.css"
+import { doc, collection, serverTimestamp, Timestamp, setDoc, updateDoc } from "firebase/firestore";
+import Message from "../messaging/Message";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/navigation";
 
 type EventsCreateAreaProps = {};
 
@@ -33,9 +37,10 @@ export type EventAttendee = {
   userName: string;
 };
 
-export type Event = {
+export type UserEvent = {
+  id: string;
   title: string;
-  date: Date | null;
+  date: Date;
   description: string;
   photoURL:string;
   creatorId: string;
@@ -43,18 +48,22 @@ export type Event = {
 };
 
 const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
-  const [eventDetails, setEventDetails] = React.useState<Event>({
+  const [user] = useAuthState(auth)
+  const [eventDetails, setEventDetails] = React.useState<UserEvent>({
+    id:nanoid(),
     title: "",
-    date: null,
+    date: new Date(),
     description: "",
     photoURL:"",
-    creatorId: "",
+    creatorId: user!.uid,
     attendees: [],
   });
 
+  const router = useRouter()
   const [selected, setSelected] = React.useState("Details");
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
   const selectedFileRef = React.useRef<HTMLInputElement>(null);
+  const [loading,setLoading] = React.useState(false)
 
   const [startDate,setStartDate] = React.useState(null)
 
@@ -74,9 +83,29 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
     }
     }
 
+    const createEvent = async () => {
+      if (eventDetails.title == "" || eventDetails.description == "") {
+        return;
+      }
+      try{
+        setLoading(true);
+        //store the event
+        const eventDocRef = doc(collection(firestore, "events"));
+        const event: UserEvent = eventDetails as UserEvent
+        await setDoc(eventDocRef, event);
+        setLoading(false);
+        router.push('/')
+      }
+      catch(error:any){
+        console.log("create event error")
+        console.log(error.message)
+      }
+    };
+
     const handleSubmit = () => {
+      console.log(eventDetails.photoURL)
       handleUploadFile()
-      console.log(eventDetails)
+      createEvent()
     }
 
     React.useEffect(() => {
@@ -194,7 +223,7 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
                     ...prev,
                     date: date!,
                   }))
-                }
+                } 
                 wrapperClassName="datePicker"
                 placeholderText="Select a Date and Time"
                 dateFormat="MMMM d, yyyy h:mm aa"
@@ -273,6 +302,7 @@ const EventsCreateArea: React.FC<EventsCreateAreaProps> = () => {
                 color="white"
                 _hover={{ bgColor: "brand.100", color: "brand.400" }}
                 onClick={handleSubmit}
+                isLoading={loading}
               >
                 Create Event
               </Button>
